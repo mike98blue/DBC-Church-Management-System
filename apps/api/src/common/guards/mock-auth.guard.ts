@@ -1,4 +1,4 @@
-import type { CanActivate} from '@nestjs/common';
+import type { CanActivate } from '@nestjs/common';
 import { type ExecutionContext, Injectable } from '@nestjs/common';
 import type { Actor } from '@churchos/auth';
 

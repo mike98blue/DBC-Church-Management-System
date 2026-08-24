@@ -8,6 +8,8 @@ import { EventsController } from './modules/events/events.controller.js';
 import { EventsService } from './modules/events/events.service.js';
 import { FormsController } from './modules/forms/forms.controller.js';
 import { FormsService } from './modules/forms/forms.service.js';
+import { GroupsController } from './modules/groups/groups.controller.js';
+import { GroupsService } from './modules/groups/groups.service.js';
 import { HouseholdsController } from './modules/households/households.controller.js';
 import { HouseholdsService } from './modules/households/households.service.js';
 import { PeopleController } from './modules/people/people.controller.js';
@@ -15,7 +17,14 @@ import { PeopleService } from './modules/people/people.service.js';
 
 @Module({
   imports: [DbModule],
-  controllers: [HealthController, PeopleController, HouseholdsController, EventsController, FormsController],
+  controllers: [
+    HealthController,
+    PeopleController,
+    HouseholdsController,
+    EventsController,
+    FormsController,
+    GroupsController,
+  ],
   providers: [
     { provide: APP_GUARD, useClass: MockAuthGuard },
     AuditService,
@@ -23,6 +32,7 @@ import { PeopleService } from './modules/people/people.service.js';
     HouseholdsService,
     EventsService,
     FormsService,
+    GroupsService,
   ],
 })
 export class AppModule {}
