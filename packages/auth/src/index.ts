@@ -29,6 +29,8 @@ export const PERMISSIONS = {
   AVAILABILITY_MANAGE: 'availability.manage',
   FACILITY_READ: 'facility.read',
   FACILITY_MANAGE: 'facility.manage',
+  WORSHIP_READ: 'worship.read',
+  WORSHIP_MANAGE: 'worship.manage',
   AUDIT_READ: 'audit.read',
   ADMIN_USERS: 'admin.users',
   ADMIN_ROLES: 'admin.roles',
