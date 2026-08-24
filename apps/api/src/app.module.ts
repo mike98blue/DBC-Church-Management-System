@@ -4,6 +4,8 @@ import { MockAuthGuard } from './common/guards/mock-auth.guard.js';
 import { DbModule } from './db/db.module.js';
 import { HealthController } from './health/health.controller.js';
 import { AuditService } from './modules/audit/audit.service.js';
+import { CareController } from './modules/care/care.controller.js';
+import { CareService } from './modules/care/care.service.js';
 import { CommunicationsController } from './modules/communications/communications.controller.js';
 import { CommunicationsService } from './modules/communications/communications.service.js';
 import { EventsController } from './modules/events/events.controller.js';
@@ -36,10 +38,12 @@ import { ReportingService } from './modules/reporting/reporting.service.js';
     GivingController,
     ReportingController,
     ImportController,
+    CareController,
   ],
   providers: [
     { provide: APP_GUARD, useClass: MockAuthGuard },
     AuditService,
+    CareService,
     PeopleService,
     HouseholdsService,
     EventsService,
