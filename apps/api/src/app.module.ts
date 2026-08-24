@@ -10,6 +10,8 @@ import { CommunicationsController } from './modules/communications/communication
 import { CommunicationsService } from './modules/communications/communications.service.js';
 import { EventsController } from './modules/events/events.controller.js';
 import { EventsService } from './modules/events/events.service.js';
+import { FacilityController } from './modules/facility/facility.controller.js';
+import { FacilityService } from './modules/facility/facility.service.js';
 import { FormsController } from './modules/forms/forms.controller.js';
 import { FormsService } from './modules/forms/forms.service.js';
 import { GivingController } from './modules/giving/giving.controller.js';
@@ -42,6 +44,7 @@ import { SchedulingService } from './modules/scheduling/scheduling.service.js';
     ImportController,
     CareController,
     SchedulingController,
+    FacilityController,
   ],
   providers: [
     { provide: APP_GUARD, useClass: MockAuthGuard },
@@ -57,6 +60,7 @@ import { SchedulingService } from './modules/scheduling/scheduling.service.js';
     ReportingService,
     ImportService,
     SchedulingService,
+    FacilityService,
   ],
 })
 export class AppModule {}

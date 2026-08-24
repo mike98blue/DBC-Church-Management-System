@@ -64,6 +64,13 @@
       "when": 1787574249260,
       "tag": "0008_quick_peter_quill",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1787575253799,
+      "tag": "0009_stale_nextwave",
+      "breakpoints": true
     }
   ]
 }
