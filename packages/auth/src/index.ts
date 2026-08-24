@@ -27,6 +27,8 @@ export const PERMISSIONS = {
   PRAYER_READ: 'prayer.read',
   SCHEDULING_MANAGE: 'scheduling.manage',
   AVAILABILITY_MANAGE: 'availability.manage',
+  FACILITY_READ: 'facility.read',
+  FACILITY_MANAGE: 'facility.manage',
   AUDIT_READ: 'audit.read',
   ADMIN_USERS: 'admin.users',
   ADMIN_ROLES: 'admin.roles',
