@@ -4,6 +4,8 @@ import { MockAuthGuard } from './common/guards/mock-auth.guard.js';
 import { DbModule } from './db/db.module.js';
 import { HealthController } from './health/health.controller.js';
 import { AuditService } from './modules/audit/audit.service.js';
+import { CommunicationsController } from './modules/communications/communications.controller.js';
+import { CommunicationsService } from './modules/communications/communications.service.js';
 import { EventsController } from './modules/events/events.controller.js';
 import { EventsService } from './modules/events/events.service.js';
 import { FormsController } from './modules/forms/forms.controller.js';
@@ -24,6 +26,7 @@ import { PeopleService } from './modules/people/people.service.js';
     EventsController,
     FormsController,
     GroupsController,
+    CommunicationsController,
   ],
   providers: [
     { provide: APP_GUARD, useClass: MockAuthGuard },
@@ -33,6 +36,7 @@ import { PeopleService } from './modules/people/people.service.js';
     EventsService,
     FormsService,
     GroupsService,
+    CommunicationsService,
   ],
 })
 export class AppModule {}

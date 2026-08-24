@@ -18,6 +18,7 @@ export const PERMISSIONS = {
   ATTENDANCE_RECORD: 'attendance.record',
   FORMS_MANAGE: 'forms.manage',
   FORMS_SUBMIT: 'forms.submit',
+  COMMUNICATIONS_SEND: 'communications.send',
   AUDIT_READ: 'audit.read',
   ADMIN_USERS: 'admin.users',
   ADMIN_ROLES: 'admin.roles',
