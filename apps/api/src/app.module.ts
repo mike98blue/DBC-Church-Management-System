@@ -6,6 +6,8 @@ import { HealthController } from './health/health.controller.js';
 import { AuditService } from './modules/audit/audit.service.js';
 import { CareController } from './modules/care/care.controller.js';
 import { CareService } from './modules/care/care.service.js';
+import { CheckinController } from './modules/checkin/checkin.controller.js';
+import { CheckinService } from './modules/checkin/checkin.service.js';
 import { CommunicationsController } from './modules/communications/communications.controller.js';
 import { CommunicationsService } from './modules/communications/communications.service.js';
 import { EventsController } from './modules/events/events.controller.js';
@@ -48,11 +50,13 @@ import { WorshipService } from './modules/worship/worship.service.js';
     SchedulingController,
     FacilityController,
     WorshipController,
+    CheckinController,
   ],
   providers: [
     { provide: APP_GUARD, useClass: MockAuthGuard },
     AuditService,
     CareService,
+    CheckinService,
     PeopleService,
     HouseholdsService,
     EventsService,

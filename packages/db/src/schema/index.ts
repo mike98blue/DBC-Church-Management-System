@@ -1,6 +1,6 @@
 /**
  * ChurchOS canonical schema — People/Households (9.2), RBAC/audit (9.1/10.2),
- * Events (9.4), Forms (9.5), Groups (9.3), Communications (9.7), Giving (9.6), Care (9.9), Scheduling (Phase 2), Facility + Worship (Phase 3). Additive.
+ * Events (9.4), Forms (9.5), Groups (9.3), Communications (9.7), Giving (9.6), Care (9.9), Scheduling (Phase 2), Facility + Worship + Check-in (Phase 3). Additive.
  */
 import { auditEvents } from './audit.js';
 import {
@@ -10,6 +10,7 @@ import {
   prayerRequests,
   prayerVisibilityEnum,
 } from './care.js';
+import { checkins } from './checkin.js';
 import {
   communicationPreferences,
   messageRecipients,
@@ -44,6 +45,7 @@ export {
   careCases,
   careNotes,
   careStatusEnum,
+  checkins,
   communicationPreferences,
   contributionAllocations,
   contributions,
