@@ -11,6 +11,8 @@ export const PERMISSIONS = {
   PEOPLE_EXPORT: 'people.export',
   HOUSEHOLDS_READ: 'households.read',
   HOUSEHOLDS_WRITE: 'households.write',
+  GROUPS_READ: 'groups.read',
+  GROUPS_MANAGE: 'groups.manage',
   EVENTS_READ: 'events.read',
   EVENTS_MANAGE: 'events.manage',
   ATTENDANCE_RECORD: 'attendance.record',
