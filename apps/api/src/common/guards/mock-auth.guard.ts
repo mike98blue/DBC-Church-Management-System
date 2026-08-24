@@ -1,17 +1,7 @@
-import type { CanActivate} from '@nestjs/common';
+import type { CanActivate } from '@nestjs/common';
 import { type ExecutionContext, Injectable } from '@nestjs/common';
 import type { Actor } from '@churchos/auth';
 
-/**
- * Development-only auth guard. Parses actor from:
- * - `Authorization: Bearer <base64url(JSON.stringify({sub, permissions}))>` (no signature in dev)
- * - `x-mock-permissions: people.read,people.write` + `x-mock-user: <id>`
- *
- * In production this is replaced by a JWT verification guard against the
- * managed OIDC provider (ADR 0003). The guard never throws 401 — it sets
- * `request.actor = null` and lets controllers enforce permission checks
- * server-side (AGENTS.md: Security).
- */
 @Injectable()
 export class MockAuthGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
@@ -35,7 +25,7 @@ export class MockAuthGuard implements CanActivate {
           return true;
         }
       } catch {
-        // fall through to mock header check
+        // fall through
       }
     }
 

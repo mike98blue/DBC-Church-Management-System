@@ -15,6 +15,13 @@
       "when": 1787536459722,
       "tag": "0001_silent_tattoo",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1787539669882,
+      "tag": "0002_slow_princess_powerful",
+      "breakpoints": true
     }
   ]
 }
