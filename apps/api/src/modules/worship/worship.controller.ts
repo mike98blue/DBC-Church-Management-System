@@ -11,7 +11,11 @@ import {
 } from '@nestjs/common';
 import { PERMISSIONS, assertPermission, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
-import type { AddServiceItemDto, CreateServiceDto, CreateSongDto } from './dto/create-worship.dto.js';
+import type {
+  AddServiceItemDto,
+  CreateServiceDto,
+  CreateSongDto,
+} from './dto/create-worship.dto.js';
 import type { WorshipService } from './worship.service.js';
 
 @Controller('api/v1/worship')
