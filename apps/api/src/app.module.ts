@@ -10,6 +10,8 @@ import { EventsController } from './modules/events/events.controller.js';
 import { EventsService } from './modules/events/events.service.js';
 import { FormsController } from './modules/forms/forms.controller.js';
 import { FormsService } from './modules/forms/forms.service.js';
+import { GivingController } from './modules/giving/giving.controller.js';
+import { GivingService } from './modules/giving/giving.service.js';
 import { GroupsController } from './modules/groups/groups.controller.js';
 import { GroupsService } from './modules/groups/groups.service.js';
 import { HouseholdsController } from './modules/households/households.controller.js';
@@ -27,6 +29,7 @@ import { PeopleService } from './modules/people/people.service.js';
     FormsController,
     GroupsController,
     CommunicationsController,
+    GivingController,
   ],
   providers: [
     { provide: APP_GUARD, useClass: MockAuthGuard },
@@ -37,6 +40,7 @@ import { PeopleService } from './modules/people/people.service.js';
     FormsService,
     GroupsService,
     CommunicationsService,
+    GivingService,
   ],
 })
 export class AppModule {}

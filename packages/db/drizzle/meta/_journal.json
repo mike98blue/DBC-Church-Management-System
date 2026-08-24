@@ -43,6 +43,13 @@
       "when": 1787540365132,
       "tag": "0005_curvy_vivisector",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1787543756514,
+      "tag": "0006_overconfident_enchantress",
+      "breakpoints": true
     }
   ]
 }
