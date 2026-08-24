@@ -1,8 +1,9 @@
 /**
  * ChurchOS canonical schema — People/Households (9.2), RBAC/audit (9.1/10.2),
- * Events (9.4), Forms (9.5), Groups (9.3), Communications (9.7), Giving (9.6). Additive.
+ * Events (9.4), Forms (9.5), Groups (9.3), Communications (9.7), Giving (9.6), Care (9.9). Additive.
  */
 import { auditEvents } from './audit.js';
+import { careCases, careNotes, careStatusEnum, prayerRequests, prayerVisibilityEnum } from './care.js';
 import {
   communicationPreferences,
   messageRecipients,
@@ -26,6 +27,9 @@ import { permissions, rolePermissions, roles } from './roles.js';
 
 export {
   auditEvents,
+  careCases,
+  careNotes,
+  careStatusEnum,
   communicationPreferences,
   contributionAllocations,
   contributions,
@@ -53,6 +57,8 @@ export {
   people,
   permissions,
   personStatusEnum,
+  prayerRequests,
+  prayerVisibilityEnum,
   rolePermissions,
   roles,
   templates,

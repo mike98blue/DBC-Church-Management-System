@@ -50,6 +50,13 @@
       "when": 1787543756514,
       "tag": "0006_overconfident_enchantress",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1787573809103,
+      "tag": "0007_mighty_senator_kelly",
+      "breakpoints": true
     }
   ]
 }
