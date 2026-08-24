@@ -2,32 +2,42 @@ import { ForbiddenException } from '@nestjs/common';
 import { describe, expect, it } from 'vitest';
 import { assertPermission, hasPermission, PERMISSIONS, type Actor } from './index';
 
-const reader: Actor = { id: 'user-1', permissions: [PERMISSIONS.PEOPLE_READ] };
-const writer: Actor = {
+const peopleReader: Actor = { id: 'user-1', permissions: [PERMISSIONS.PEOPLE_READ] };
+const peopleWriter: Actor = {
   id: 'user-2',
   permissions: [PERMISSIONS.PEOPLE_READ, PERMISSIONS.PEOPLE_WRITE],
+};
+const eventsReader: Actor = { id: 'user-3', permissions: [PERMISSIONS.EVENTS_READ] };
+const eventsManager: Actor = {
+  id: 'user-4',
+  permissions: [PERMISSIONS.EVENTS_READ, PERMISSIONS.EVENTS_MANAGE],
 };
 
 describe('hasPermission', () => {
   it('returns false for null actor', () => {
     expect(hasPermission(null, PERMISSIONS.PEOPLE_READ)).toBe(false);
+    expect(hasPermission(null, PERMISSIONS.EVENTS_MANAGE)).toBe(false);
   });
 
   it('returns false when permission is missing', () => {
-    expect(hasPermission(reader, PERMISSIONS.PEOPLE_WRITE)).toBe(false);
+    expect(hasPermission(peopleReader, PERMISSIONS.PEOPLE_WRITE)).toBe(false);
+    expect(hasPermission(eventsReader, PERMISSIONS.EVENTS_MANAGE)).toBe(false);
   });
 
   it('returns true when permission is present', () => {
-    expect(hasPermission(writer, PERMISSIONS.PEOPLE_WRITE)).toBe(true);
+    expect(hasPermission(peopleWriter, PERMISSIONS.PEOPLE_WRITE)).toBe(true);
+    expect(hasPermission(eventsManager, PERMISSIONS.EVENTS_MANAGE)).toBe(true);
   });
 });
 
 describe('assertPermission', () => {
   it('throws ForbiddenException when permission is missing', () => {
-    expect(() => assertPermission(reader, PERMISSIONS.PEOPLE_WRITE)).toThrow(ForbiddenException);
+    expect(() => assertPermission(peopleReader, PERMISSIONS.PEOPLE_WRITE)).toThrow(ForbiddenException);
+    expect(() => assertPermission(eventsReader, PERMISSIONS.EVENTS_MANAGE)).toThrow(ForbiddenException);
   });
 
   it('does not throw when permission is present', () => {
-    expect(() => assertPermission(writer, PERMISSIONS.PEOPLE_WRITE)).not.toThrow();
+    expect(() => assertPermission(peopleWriter, PERMISSIONS.PEOPLE_WRITE)).not.toThrow();
+    expect(() => assertPermission(eventsManager, PERMISSIONS.EVENTS_MANAGE)).not.toThrow();
   });
 });
