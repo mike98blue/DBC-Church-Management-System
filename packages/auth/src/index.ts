@@ -14,6 +14,8 @@ export const PERMISSIONS = {
   EVENTS_READ: 'events.read',
   EVENTS_MANAGE: 'events.manage',
   ATTENDANCE_RECORD: 'attendance.record',
+  FORMS_MANAGE: 'forms.manage',
+  FORMS_SUBMIT: 'forms.submit',
   AUDIT_READ: 'audit.read',
   ADMIN_USERS: 'admin.users',
   ADMIN_ROLES: 'admin.roles',
