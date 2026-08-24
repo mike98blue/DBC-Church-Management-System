@@ -1,0 +1,20 @@
+{
+  "name": "churchos",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "lint": "pnpm --filter='*' run lint",
+    "typecheck": "pnpm --filter='*' run typecheck",
+    "test": "pnpm --filter='*' run test",
+    "build": "pnpm --filter='*' run build",
+    "db:generate": "pnpm --filter='*' run db:generate",
+    "db:migrate": "pnpm --filter='*' run db:migrate",
+    "setup": "pnpm install"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}

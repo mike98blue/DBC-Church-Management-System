@@ -1,0 +1,33 @@
+# Default
+* @church-tech/core
+
+# Repository governance
+/.github/ @church-tech/leads
+/AGENTS.md @church-tech/leads
+/SECURITY.md @church-tech/security
+
+# Authentication and authorization
+/packages/auth/ @church-tech/security
+/apps/api/src/modules/auth/ @church-tech/security
+
+# Database and migrations
+/packages/db/ @church-tech/data
+/packages/db/migrations/ @church-tech/data @church-tech/security
+
+# Giving
+/apps/api/src/modules/giving/ @church-tech/finance-tech @church-tech/security
+
+# Pastoral care
+/apps/api/src/modules/care/ @church-tech/pastoral-tech @church-tech/security
+
+# Check-in
+/apps/api/src/modules/checkin/ @church-tech/checkin @church-tech/security
+
+# Infrastructure
+/infrastructure/ @church-tech/platform @church-tech/security
+
+# Public website
+/apps/web/ @church-tech/web
+
+# CMS
+/apps/cms/ @church-tech/web
