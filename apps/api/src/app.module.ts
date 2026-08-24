@@ -16,8 +16,12 @@ import { GroupsController } from './modules/groups/groups.controller.js';
 import { GroupsService } from './modules/groups/groups.service.js';
 import { HouseholdsController } from './modules/households/households.controller.js';
 import { HouseholdsService } from './modules/households/households.service.js';
+import { ImportController } from './modules/import/import.controller.js';
+import { ImportService } from './modules/import/import.service.js';
 import { PeopleController } from './modules/people/people.controller.js';
 import { PeopleService } from './modules/people/people.service.js';
+import { ReportingController } from './modules/reporting/reporting.controller.js';
+import { ReportingService } from './modules/reporting/reporting.service.js';
 
 @Module({
   imports: [DbModule],
@@ -30,6 +34,8 @@ import { PeopleService } from './modules/people/people.service.js';
     GroupsController,
     CommunicationsController,
     GivingController,
+    ReportingController,
+    ImportController,
   ],
   providers: [
     { provide: APP_GUARD, useClass: MockAuthGuard },
@@ -41,6 +47,8 @@ import { PeopleService } from './modules/people/people.service.js';
     GroupsService,
     CommunicationsService,
     GivingService,
+    ReportingService,
+    ImportService,
   ],
 })
 export class AppModule {}

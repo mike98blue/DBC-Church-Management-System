@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Header,
   HttpCode,
   Param,
   ParseUUIDPipe,
@@ -13,6 +14,7 @@ import {
 } from '@nestjs/common';
 import { assertPermission, PERMISSIONS, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
+import type { ReportingService } from '../reporting/reporting.service.js';
 import type { CreatePersonDto } from './dto/create-person.dto.js';
 import type { UpdatePersonDto } from './dto/update-person.dto.js';
 import type { PeopleService } from './people.service.js';
@@ -20,7 +22,18 @@ import type { PeopleService } from './people.service.js';
 @Controller('api/v1/people')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }))
 export class PeopleController {
-  constructor(private readonly people: PeopleService) {}
+  constructor(
+    private readonly people: PeopleService,
+    private readonly reporting: ReportingService
+  ) {}
+
+  @Get('export')
+  @Header('Content-Type', 'text/csv')
+  @Header('Content-Disposition', 'attachment; filename="people.csv"')
+  async export(@CurrentActor() actor: Actor | null) {
+    assertPermission(actor, PERMISSIONS.PEOPLE_EXPORT);
+    return this.reporting.exportPeopleCsv(actor?.id ?? null);
+  }
 
   @Get()
   async list(
