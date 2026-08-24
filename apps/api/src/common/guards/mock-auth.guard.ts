@@ -1,4 +1,4 @@
-import type { CanActivate } from '@nestjs/common';
+import type { CanActivate} from '@nestjs/common';
 import { type ExecutionContext, Injectable } from '@nestjs/common';
 import type { Actor } from '@churchos/auth';
 
@@ -9,7 +9,6 @@ export class MockAuthGuard implements CanActivate {
       actor?: Actor | null;
       headers: Record<string, string | string[] | undefined>;
     }>();
-
     const auth = request.headers['authorization'] as string | undefined;
     if (auth?.startsWith('Bearer ')) {
       const b64 = auth.slice(7).trim();
@@ -24,11 +23,8 @@ export class MockAuthGuard implements CanActivate {
           };
           return true;
         }
-      } catch {
-        // fall through
-      }
+      } catch {}
     }
-
     const mock = request.headers['x-mock-permissions'] as string | undefined;
     if (mock !== undefined) {
       const permissions = mock
@@ -39,7 +35,6 @@ export class MockAuthGuard implements CanActivate {
       request.actor = { id: String(userId), permissions };
       return true;
     }
-
     request.actor = null;
     return true;
   }
