@@ -16,14 +16,25 @@ function mockService(): CareService {
 describe('CareController — Highly Restricted', () => {
   it('requires prayer.read for prayers', async () => {
     const c = new CareController(mockService());
-    await expect(c.createPrayer(null, { personId: '00000000-0000-0000-0000-000000000001', request: 'test' } as never)).rejects.toThrow(ForbiddenException);
+    await expect(
+      c.createPrayer(null, {
+        personId: '00000000-0000-0000-0000-000000000001',
+        request: 'test',
+      } as never),
+    ).rejects.toThrow(ForbiddenException);
     await expect(c.listPrayers(null)).rejects.toThrow(ForbiddenException);
   });
   it('requires care.write for cases/notes', async () => {
     const c = new CareController(mockService());
-    await expect(c.createCase(null, { personId: '00000000-0000-0000-0000-000000000001', title: 't' } as never)).rejects.toThrow(ForbiddenException);
-    await expect(c.getCase(null, '00000000-0000-0000-0000-000000000001')).rejects.toThrow(ForbiddenException);
-    await expect(c.addNote(null, '00000000-0000-0000-0000-000000000001', { note: 'x' } as never)).rejects.toThrow(ForbiddenException);
+    await expect(
+      c.createCase(null, { personId: '00000000-0000-0000-0000-000000000001', title: 't' } as never),
+    ).rejects.toThrow(ForbiddenException);
+    await expect(c.getCase(null, '00000000-0000-0000-0000-000000000001')).rejects.toThrow(
+      ForbiddenException,
+    );
+    await expect(
+      c.addNote(null, '00000000-0000-0000-0000-000000000001', { note: 'x' } as never),
+    ).rejects.toThrow(ForbiddenException);
   });
   it('does not expose care notes via generic people endpoint (isolated controller)', () => {
     expect(CareController.name).toBe('CareController');

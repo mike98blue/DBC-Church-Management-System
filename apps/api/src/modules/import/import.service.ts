@@ -11,10 +11,13 @@ export class ImportService {
     return this.db as NonNullable<Database>;
   }
 
-  async previewPeopleCsv(csv: string): Promise<{ total: number; valid: number; duplicates: number; errors: string[] }> {
+  async previewPeopleCsv(
+    csv: string,
+  ): Promise<{ total: number; valid: number; duplicates: number; errors: string[] }> {
     const db = this.requireDb();
     const lines = csv.trim().split('\n');
-    if (lines.length < 2) throw new BadRequestException('CSV must have header and at least one row');
+    if (lines.length < 2)
+      throw new BadRequestException('CSV must have header and at least one row');
     const header = lines[0]?.toLowerCase() ?? '';
     if (!header.includes('firstname') || !header.includes('lastname')) {
       throw new BadRequestException('CSV header must include firstName and lastName');
@@ -25,7 +28,9 @@ export class ImportService {
     let duplicates = 0;
 
     const existing = await db.select().from(people);
-    const existingSet = new Set(existing.map((p) => `${p.firstName.toLowerCase()}|${p.lastName.toLowerCase()}`));
+    const existingSet = new Set(
+      existing.map((p) => `${p.firstName.toLowerCase()}|${p.lastName.toLowerCase()}`),
+    );
 
     for (let i = 0; i < rows.length; i++) {
       const cols = rows[i]?.split(',') ?? [];

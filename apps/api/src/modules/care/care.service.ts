@@ -17,7 +17,11 @@ export class CareService {
     const db = this.requireDb();
     const [row] = await db
       .insert(prayerRequests)
-      .values({ personId: dto.personId, request: dto.request, visibility: (dto.visibility as never) ?? 'private' })
+      .values({
+        personId: dto.personId,
+        request: dto.request,
+        visibility: (dto.visibility as never) ?? 'private',
+      })
       .returning();
     if (!row) throw new Error('Failed to create prayer');
     return row;
@@ -33,7 +37,10 @@ export class CareService {
   // Care — Highly Restricted, never returned from people/households/events endpoints
   async createCase(dto: { personId: string; title: string }) {
     const db = this.requireDb();
-    const [row] = await db.insert(careCases).values({ personId: dto.personId, title: dto.title }).returning();
+    const [row] = await db
+      .insert(careCases)
+      .values({ personId: dto.personId, title: dto.title })
+      .returning();
     if (!row) throw new Error('Failed to create case');
     return row;
   }
@@ -49,7 +56,10 @@ export class CareService {
   async addNote(caseId: string, authorId: string | null, note: string) {
     const db = this.requireDb();
     await this.getCase(caseId);
-    const [row] = await db.insert(careNotes).values({ careCaseId: caseId, authorId, note }).returning();
+    const [row] = await db
+      .insert(careNotes)
+      .values({ careCaseId: caseId, authorId, note })
+      .returning();
     if (!row) throw new Error('Failed to add note');
     return row;
   }

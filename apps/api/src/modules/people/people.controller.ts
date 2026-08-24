@@ -24,7 +24,7 @@ import type { PeopleService } from './people.service.js';
 export class PeopleController {
   constructor(
     private readonly people: PeopleService,
-    private readonly reporting: ReportingService
+    private readonly reporting: ReportingService,
   ) {}
 
   @Get('export')
