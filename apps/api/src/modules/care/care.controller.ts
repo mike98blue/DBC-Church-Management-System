@@ -1,4 +1,14 @@
-import { Body, Controller, Get, HttpCode, Param, ParseUUIDPipe, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { PERMISSIONS, assertPermission, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
 import type { AddCareNoteDto, CreateCareCaseDto, CreatePrayerDto } from './dto/create-care.dto.js';
@@ -38,7 +48,11 @@ export class CareController {
 
   @Post('cases/:id/notes')
   @HttpCode(201)
-  async addNote(@CurrentActor() actor: Actor | null, @Param('id', ParseUUIDPipe) id: string, @Body() dto: AddCareNoteDto) {
+  async addNote(
+    @CurrentActor() actor: Actor | null,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: AddCareNoteDto,
+  ) {
     assertPermission(actor, PERMISSIONS.CARE_WRITE);
     return this.care.addNote(id, actor?.id ?? null, dto.note);
   }

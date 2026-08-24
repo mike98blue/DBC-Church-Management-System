@@ -24,6 +24,8 @@ import { PeopleController } from './modules/people/people.controller.js';
 import { PeopleService } from './modules/people/people.service.js';
 import { ReportingController } from './modules/reporting/reporting.controller.js';
 import { ReportingService } from './modules/reporting/reporting.service.js';
+import { SchedulingController } from './modules/scheduling/scheduling.controller.js';
+import { SchedulingService } from './modules/scheduling/scheduling.service.js';
 
 @Module({
   imports: [DbModule],
@@ -39,6 +41,7 @@ import { ReportingService } from './modules/reporting/reporting.service.js';
     ReportingController,
     ImportController,
     CareController,
+    SchedulingController,
   ],
   providers: [
     { provide: APP_GUARD, useClass: MockAuthGuard },
@@ -53,6 +56,7 @@ import { ReportingService } from './modules/reporting/reporting.service.js';
     GivingService,
     ReportingService,
     ImportService,
+    SchedulingService,
   ],
 })
 export class AppModule {}

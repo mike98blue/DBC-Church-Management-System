@@ -25,6 +25,8 @@ export const PERMISSIONS = {
   CARE_READ: 'care.read',
   CARE_WRITE: 'care.write',
   PRAYER_READ: 'prayer.read',
+  SCHEDULING_MANAGE: 'scheduling.manage',
+  AVAILABILITY_MANAGE: 'availability.manage',
   AUDIT_READ: 'audit.read',
   ADMIN_USERS: 'admin.users',
   ADMIN_ROLES: 'admin.roles',

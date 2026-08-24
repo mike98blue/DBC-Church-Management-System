@@ -1,4 +1,15 @@
-import { Body, Controller, Get, Header, HttpCode, Post, UsePipes, ValidationPipe, Headers, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Header,
+  HttpCode,
+  Post,
+  UsePipes,
+  ValidationPipe,
+  Headers,
+  Req,
+} from '@nestjs/common';
 import { PERMISSIONS, assertPermission, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
 import type { ReportingService } from '../reporting/reporting.service.js';
@@ -10,7 +21,7 @@ import type { GivingService } from './giving.service.js';
 export class GivingController {
   constructor(
     private readonly giving: GivingService,
-    private readonly reporting: ReportingService
+    private readonly reporting: ReportingService,
   ) {}
 
   @Get('funds')
@@ -53,7 +64,10 @@ export class GivingController {
 
   @Post('webhook')
   @HttpCode(200)
-  async webhook(@Req() req: { rawBody?: string; body?: unknown }, @Headers('stripe-signature') signature?: string) {
+  async webhook(
+    @Req() req: { rawBody?: string; body?: unknown },
+    @Headers('stripe-signature') signature?: string,
+  ) {
     const raw =
       (req as unknown as { rawBody?: string }).rawBody ??
       JSON.stringify((req as unknown as { body?: unknown }).body ?? {});

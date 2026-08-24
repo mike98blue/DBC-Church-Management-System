@@ -8,7 +8,7 @@ import type { AuditService } from '../audit/audit.service.js';
 export class ReportingService {
   constructor(
     @Inject('DATABASE') private readonly db: Database | null,
-    private readonly audit: AuditService
+    private readonly audit: AuditService,
   ) {}
 
   private requireDb(): NonNullable<Database> {
@@ -18,7 +18,10 @@ export class ReportingService {
 
   async peopleCounts(): Promise<Record<string, number>> {
     const db = this.requireDb();
-    const rows = await db.select({ status: people.status, value: count() }).from(people).groupBy(people.status);
+    const rows = await db
+      .select({ status: people.status, value: count() })
+      .from(people)
+      .groupBy(people.status);
     const result: Record<string, number> = {};
     for (const r of rows) result[r.status] = r.value;
     return result;
@@ -27,14 +30,21 @@ export class ReportingService {
   async givingByFund(): Promise<{ fundId: string; totalCents: number }[]> {
     const db = this.requireDb();
     // Simplified: sum contributions via allocations
-    const rows = await db.execute(sql`SELECT fund_id as "fundId", SUM(amount_cents) as "totalCents" FROM contribution_allocations GROUP BY fund_id`);
+    const rows = await db.execute(
+      sql`SELECT fund_id as "fundId", SUM(amount_cents) as "totalCents" FROM contribution_allocations GROUP BY fund_id`,
+    );
     return rows.rows as { fundId: string; totalCents: number }[];
   }
 
   async exportPeopleCsv(actorId: string | null): Promise<string> {
     const db = this.requireDb();
     const rows = await db.select().from(people);
-    await this.audit.log({ actorId, action: 'people.export', resourceType: 'people', metadata: { count: rows.length } });
+    await this.audit.log({
+      actorId,
+      action: 'people.export',
+      resourceType: 'people',
+      metadata: { count: rows.length },
+    });
     const header = 'id,firstName,lastName,status';
     const lines = rows.map((r) => `${r.id},${r.firstName},${r.lastName},${r.status}`);
     return [header, ...lines].join('\n');
@@ -43,9 +53,16 @@ export class ReportingService {
   async exportGivingCsv(actorId: string | null): Promise<string> {
     const db = this.requireDb();
     const rows = await db.select().from(contributions);
-    await this.audit.log({ actorId, action: 'giving.export', resourceType: 'contributions', metadata: { count: rows.length } });
+    await this.audit.log({
+      actorId,
+      action: 'giving.export',
+      resourceType: 'contributions',
+      metadata: { count: rows.length },
+    });
     const header = 'id,donorId,amountCents,currency,status';
-    const lines = rows.map((r) => `${r.id},${r.donorId},${r.amountCents},${r.currency},${r.status}`);
+    const lines = rows.map(
+      (r) => `${r.id},${r.donorId},${r.amountCents},${r.currency},${r.status}`,
+    );
     return [header, ...lines].join('\n');
   }
 }

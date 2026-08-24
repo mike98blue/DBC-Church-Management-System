@@ -1,7 +1,11 @@
 import { index, pgEnum, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 import { people } from './people.js';
 
-export const prayerVisibilityEnum = pgEnum('prayer_visibility', ['public', 'private', 'pastoral_only']);
+export const prayerVisibilityEnum = pgEnum('prayer_visibility', [
+  'public',
+  'private',
+  'pastoral_only',
+]);
 export const careStatusEnum = pgEnum('care_status', ['open', 'in_progress', 'closed']);
 
 export const prayerRequests = pgTable(
@@ -16,7 +20,7 @@ export const prayerRequests = pgTable(
     status: text('status').notNull().default('open'),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   },
-  (table) => [index('prayer_person_idx').on(table.personId)]
+  (table) => [index('prayer_person_idx').on(table.personId)],
 );
 
 export const careCases = pgTable(
@@ -31,7 +35,7 @@ export const careCases = pgTable(
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
   },
-  (table) => [index('care_person_idx').on(table.personId)]
+  (table) => [index('care_person_idx').on(table.personId)],
 );
 
 export const careNotes = pgTable(
@@ -45,5 +49,5 @@ export const careNotes = pgTable(
     note: text('note').notNull(),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   },
-  (table) => [index('care_notes_case_idx').on(table.careCaseId)]
+  (table) => [index('care_notes_case_idx').on(table.careCaseId)],
 );

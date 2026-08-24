@@ -57,6 +57,13 @@
       "when": 1787573809103,
       "tag": "0007_mighty_senator_kelly",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1787574249260,
+      "tag": "0008_quick_peter_quill",
+      "breakpoints": true
     }
   ]
 }
