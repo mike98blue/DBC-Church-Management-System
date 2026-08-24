@@ -28,6 +28,8 @@ import { ReportingController } from './modules/reporting/reporting.controller.js
 import { ReportingService } from './modules/reporting/reporting.service.js';
 import { SchedulingController } from './modules/scheduling/scheduling.controller.js';
 import { SchedulingService } from './modules/scheduling/scheduling.service.js';
+import { WorshipController } from './modules/worship/worship.controller.js';
+import { WorshipService } from './modules/worship/worship.service.js';
 
 @Module({
   imports: [DbModule],
@@ -45,6 +47,7 @@ import { SchedulingService } from './modules/scheduling/scheduling.service.js';
     CareController,
     SchedulingController,
     FacilityController,
+    WorshipController,
   ],
   providers: [
     { provide: APP_GUARD, useClass: MockAuthGuard },
@@ -61,6 +64,7 @@ import { SchedulingService } from './modules/scheduling/scheduling.service.js';
     ImportService,
     SchedulingService,
     FacilityService,
+    WorshipService,
   ],
 })
 export class AppModule {}
