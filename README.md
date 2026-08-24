@@ -68,12 +68,35 @@ Children's check-in included only if church intends to replace existing system a
 
 ## Quick Start
 
-See `AGENTS.md` for AI operating rules, development onboarding, and contribution guidelines.
+Prerequisites: Node.js 22+ and pnpm (`npm install -g pnpm`). Docker for the local database.
+
+```text
+pnpm install                 # install dependencies
+docker compose up -d         # start local PostgreSQL
+cp .env.example .env         # local env defaults
+pnpm db:migrate              # apply migrations
+pnpm db:seed                 # load synthetic seed data (never real PII)
+pnpm dev                     # run apps in watch mode
+```
+
+API health check: `http://localhost:4000/healthz`
+
+## Quality gates (required before every PR)
+
+```text
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+```
+
+See `AGENTS.md` for AI operating rules and `CONTRIBUTING.md` for the workflow.
 
 ## Documentation
 
+- `BLUEPRINT.md` - full product and engineering blueprint (research + plan)
 - `AGENTS.md` - AI operating rules and scope
-- `CODEOWNERS` - GitHub code ownership
-- `docs/adr/` - Architecture decision records
-- `docs/runbooks/` - Operational runbooks
-- `.github/` - GitHub workflows and templates
+- `CONTRIBUTING.md` - contribution workflow
+- `SECURITY.md` - security policy and sensitive domains
+- `docs/adr/` - architecture decision records
+- `.github/` - workflows, issue/PR templates, CODEOWNERS

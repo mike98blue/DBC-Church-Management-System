@@ -1,20 +1,27 @@
 {
   "name": "churchos",
+  "version": "0.1.0",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "packageManager": "pnpm@11.23.0",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "lint": "pnpm --filter='*' run lint",
-    "typecheck": "pnpm --filter='*' run typecheck",
-    "test": "pnpm --filter='*' run test",
-    "build": "pnpm --filter='*' run build",
-    "db:generate": "pnpm --filter='*' run db:generate",
-    "db:migrate": "pnpm --filter='*' run db:migrate",
-    "setup": "pnpm install"
+    "dev": "pnpm -r --if-present run dev",
+    "build": "pnpm -r --if-present run build",
+    "lint": "eslint . && pnpm -r --if-present run lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "pnpm -r --if-present run typecheck",
+    "test": "pnpm -r --if-present run test",
+    "db:generate": "pnpm --filter @churchos/db db:generate",
+    "db:migrate": "pnpm --filter @churchos/db db:migrate",
+    "db:seed": "pnpm --filter @churchos/db db:seed"
   },
   "devDependencies": {
-    "typescript": "^5.4.5"
+    "eslint": "^9.30.0",
+    "prettier": "^3.6.0",
+    "typescript": "^5.9.0",
+    "typescript-eslint": "^8.35.0"
   }
 }

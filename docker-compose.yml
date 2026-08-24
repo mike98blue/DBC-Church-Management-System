@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:18-alpine
+    container_name: churchos-db
+    environment:
+      POSTGRES_USER: churchos
+      POSTGRES_PASSWORD: churchos
+      POSTGRES_DB: churchos
+    ports:
+      - '5432:5432'
+    volumes:
+      - churchos-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U churchos -d churchos']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  churchos-db-data:
