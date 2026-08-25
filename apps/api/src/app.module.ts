@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
-import { MockAuthGuard } from './common/guards/mock-auth.guard.js';
 import { DbModule } from './db/db.module.js';
 import { HealthController } from './health/health.controller.js';
+import { OidcAuthGuard } from './common/guards/oidc-auth.guard.js';
 import { AuditService } from './modules/audit/audit.service.js';
 import { BackgroundChecksController } from './modules/backgroundchecks/background-checks.controller.js';
 import { BackgroundChecksService } from './modules/backgroundchecks/background-checks.service.js';
@@ -34,6 +34,8 @@ import { ReportingController } from './modules/reporting/reporting.controller.js
 import { ReportingService } from './modules/reporting/reporting.service.js';
 import { SchedulingController } from './modules/scheduling/scheduling.controller.js';
 import { SchedulingService } from './modules/scheduling/scheduling.service.js';
+import { UsersController } from './modules/users/users.controller.js';
+import { UsersService } from './modules/users/users.service.js';
 import { WorshipController } from './modules/worship/worship.controller.js';
 import { WorshipService } from './modules/worship/worship.service.js';
 
@@ -57,9 +59,10 @@ import { WorshipService } from './modules/worship/worship.service.js';
     CheckinController,
     DashboardController,
     BackgroundChecksController,
+    UsersController,
   ],
   providers: [
-    { provide: APP_GUARD, useClass: MockAuthGuard },
+    { provide: APP_GUARD, useClass: OidcAuthGuard },
     AuditService,
     BackgroundChecksService,
     CareService,
@@ -77,6 +80,7 @@ import { WorshipService } from './modules/worship/worship.service.js';
     FacilityService,
     WorshipService,
     DashboardService,
+    UsersService,
   ],
 })
 export class AppModule {}
