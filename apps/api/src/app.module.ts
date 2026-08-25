@@ -3,6 +3,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { DbModule } from './db/db.module.js';
 import { HealthController } from './health/health.controller.js';
 import { OidcAuthGuard } from './common/guards/oidc-auth.guard.js';
+import { RateLimitGuard } from './common/guards/rate-limit.guard.js';
 import { AuditService } from './modules/audit/audit.service.js';
 import { BackgroundChecksController } from './modules/backgroundchecks/background-checks.controller.js';
 import { BackgroundChecksService } from './modules/backgroundchecks/background-checks.service.js';
@@ -62,6 +63,7 @@ import { WorshipService } from './modules/worship/worship.service.js';
     UsersController,
   ],
   providers: [
+    { provide: APP_GUARD, useClass: RateLimitGuard },
     { provide: APP_GUARD, useClass: OidcAuthGuard },
     AuditService,
     BackgroundChecksService,
