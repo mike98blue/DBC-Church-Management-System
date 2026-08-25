@@ -35,6 +35,9 @@ desktop.ini
 .idea/
 *.swp
 
+# Obsidian vault config
+.obsidian/
+
 # Local databases
 *.sqlite
 *.db
