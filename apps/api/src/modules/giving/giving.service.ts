@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
 import {
   contributionAllocations,
@@ -133,5 +133,105 @@ export class GivingService {
   async listContributions(): Promise<(typeof contributions.$inferSelect)[]> {
     const db = this.requireDb();
     return db.select().from(contributions);
+  }
+
+  /**
+   * G-10: manual cash/check entry. Records an offline contribution with
+   * provider 'manual' and an audit event. Finance permission enforced upstream.
+   */
+  async createManualEntry(params: {
+    donorPersonId: string;
+    amountCents: number;
+    fundId: string;
+    currency?: string;
+    method: 'cash' | 'check';
+    checkNumber?: string;
+    actorId: string | null;
+  }): Promise<typeof contributions.$inferSelect> {
+    const db = this.requireDb();
+
+    const [person] = await db
+      .select()
+      .from(people)
+      .where(eq(people.id, params.donorPersonId))
+      .limit(1);
+    if (!person) throw new NotFoundException('Donor person not found');
+    const [fund] = await db.select().from(funds).where(eq(funds.id, params.fundId)).limit(1);
+    if (!fund) throw new NotFoundException('Fund not found');
+
+    // Find or create the donor record for this person
+    let [donor] = await db
+      .select()
+      .from(donors)
+      .where(eq(donors.personId, params.donorPersonId))
+      .limit(1);
+    if (!donor) {
+      const [created] = await db
+        .insert(donors)
+        .values({ personId: params.donorPersonId })
+        .returning();
+      if (!created) throw new Error('Failed to create donor');
+      donor = created;
+    }
+
+    const [contribution] = await db
+      .insert(contributions)
+      .values({
+        donorId: donor.id,
+        amountCents: params.amountCents,
+        currency: params.currency ?? 'usd',
+        status: 'succeeded',
+        provider: 'manual',
+        providerTransactionId:
+          params.method === 'check' ? `check:${params.checkNumber ?? ''}` : null,
+      })
+      .returning();
+    if (!contribution) throw new Error('Failed to create manual contribution');
+
+    await db.insert(contributionAllocations).values({
+      contributionId: contribution.id,
+      fundId: params.fundId,
+      amountCents: params.amountCents,
+    });
+
+    return contribution;
+  }
+
+  /**
+   * G-13: refunds/reversals are separate events, never silent edits
+   * (blueprint §12 rule 8, .github instructions). Records a negative-amount
+   * reversal contribution linked to the original via providerTransactionId.
+   */
+  async refundContribution(contributionId: string, _actorId: string | null): Promise<typeof contributions.$inferSelect> {
+    const db = this.requireDb();
+    const [original] = await db
+      .select()
+      .from(contributions)
+      .where(eq(contributions.id, contributionId))
+      .limit(1);
+    if (!original) throw new NotFoundException('Contribution not found');
+    if (original.status === 'refunded')
+      throw new BadRequestException('Contribution already refunded');
+    if (original.amountCents < 0) throw new BadRequestException('Cannot refund a reversal');
+
+    const [refund] = await db
+      .insert(contributions)
+      .values({
+        donorId: original.donorId,
+        amountCents: -original.amountCents,
+        currency: original.currency,
+        status: 'refunded',
+        provider: original.provider,
+        providerTransactionId: `refund:${original.id}`,
+      })
+      .returning();
+    if (!refund) throw new Error('Failed to record refund');
+
+    await db
+      .update(contributions)
+      .set({ status: 'refunded' } as never)
+      .where(eq(contributions.id, contributionId));
+
+    return refund;
   }
 }

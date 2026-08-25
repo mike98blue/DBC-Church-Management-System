@@ -10,6 +10,8 @@ function mockService(): GivingService {
     createFund: vi.fn().mockResolvedValue({ id: 'f1' }),
     createCheckoutSession: vi.fn().mockResolvedValue({ url: 'https://mock', sessionId: 'cs_mock' }),
     listContributions: vi.fn().mockResolvedValue([]),
+    createManualEntry: vi.fn().mockResolvedValue({ id: 'c1', provider: 'manual' }),
+    refundContribution: vi.fn().mockResolvedValue({ id: 'c2', amountCents: -1000 }),
     handleWebhook: vi.fn().mockResolvedValue({ received: true, id: 'evt_1' }),
   } as unknown as GivingService;
 }
@@ -37,6 +39,33 @@ describe('GivingController', () => {
       ForbiddenException,
     );
   });
+  it('requires giving.manage for manual entry (G-10)', async () => {
+    const service = mockService();
+    const c = new GivingController(service, mockReporting());
+    const dto = {
+      donorPersonId: '00000000-0000-0000-0000-000000000001',
+      amountCents: 2500,
+      fundId: '00000000-0000-0000-0000-000000000002',
+      method: 'check' as const,
+      checkNumber: '1042',
+    };
+    await expect(c.createManualEntry(null, dto)).rejects.toThrow(ForbiddenException);
+    await expect(
+      c.createManualEntry({ id: 'u1', permissions: ['giving.read' as never] }, dto),
+    ).rejects.toThrow(ForbiddenException);
+    await c.createManualEntry({ id: 'u1', permissions: ['giving.manage' as never] }, dto);
+    expect(service.createManualEntry).toHaveBeenCalledOnce();
+  });
+
+  it('requires giving.manage for refunds (G-13)', async () => {
+    const service = mockService();
+    const c = new GivingController(service, mockReporting());
+    const id = '00000000-0000-0000-0000-000000000003';
+    await expect(c.refund(null, id)).rejects.toThrow(ForbiddenException);
+    await c.refund({ id: 'u1', permissions: ['giving.manage' as never] }, id);
+    expect(service.refundContribution).toHaveBeenCalledWith(id, 'u1');
+  });
+
   it('webhook is public (no auth)', async () => {
     const service = mockService();
     const c = new GivingController(service, mockReporting());

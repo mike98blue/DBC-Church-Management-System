@@ -4,6 +4,8 @@ import {
   Get,
   Header,
   HttpCode,
+  Param,
+  ParseUUIDPipe,
   Post,
   UsePipes,
   ValidationPipe,
@@ -13,7 +15,7 @@ import {
 import { PERMISSIONS, assertPermission, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
 import type { ReportingService } from '../reporting/reporting.service.js';
-import type { CreateCheckoutDto, CreateFundDto } from './dto/create-fund.dto.js';
+import type { CreateCheckoutDto, CreateFundDto, CreateManualEntryDto } from './dto/create-fund.dto.js';
 import type { GivingService } from './giving.service.js';
 
 @Controller('api/v1/giving')
@@ -52,6 +54,22 @@ export class GivingController {
   async listContributions(@CurrentActor() actor: Actor | null) {
     assertPermission(actor, PERMISSIONS.GIVING_READ);
     return this.giving.listContributions();
+  }
+
+  /** G-10: manual cash/check entry — finance permission, audited upstream. */
+  @Post('contributions/manual')
+  @HttpCode(201)
+  async createManualEntry(@CurrentActor() actor: Actor | null, @Body() dto: CreateManualEntryDto) {
+    assertPermission(actor, PERMISSIONS.GIVING_MANAGE);
+    return this.giving.createManualEntry({ ...dto, actorId: actor?.id ?? null });
+  }
+
+  /** G-13: refunds are separate reversal events, never silent edits. */
+  @Post('contributions/:id/refund')
+  @HttpCode(201)
+  async refund(@CurrentActor() actor: Actor | null, @Param('id', ParseUUIDPipe) id: string) {
+    assertPermission(actor, PERMISSIONS.GIVING_MANAGE);
+    return this.giving.refundContribution(id, actor?.id ?? null);
   }
 
   @Get('export')
