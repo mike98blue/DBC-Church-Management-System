@@ -6,10 +6,15 @@ import {
   messageRecipients,
   messages,
   people,
+  templates,
 } from '@churchos/db';
 import type { Database } from '@churchos/db';
 import { emailProvider } from './email.provider.js';
 import type { SendGroupEmailDto } from './dto/send-group-email.dto.js';
+
+function renderTemplate(template: string, variables: Record<string, string> = {}): string {
+  return template.replace(/\{\{(\w+)\}\}/g, (_, key: string) => variables[key] ?? `{{${key}}}`);
+}
 
 @Injectable()
 export class CommunicationsService {
@@ -25,6 +30,23 @@ export class CommunicationsService {
     actorId: string | null,
   ): Promise<typeof messages.$inferSelect> {
     const db = this.requireDb();
+
+    let subject = dto.subject;
+    let body = dto.body;
+    let templateId: string | null = null;
+
+    if (dto.templateId) {
+      const [template] = await db
+        .select()
+        .from(templates)
+        .where(eq(templates.id, dto.templateId))
+        .limit(1);
+      if (template) {
+        subject = renderTemplate(template.subject, dto.variables);
+        body = renderTemplate(template.body, dto.variables);
+        templateId = template.id;
+      }
+    }
 
     let targetPersonIds: string[] = [];
     if (dto.groupId) {
@@ -50,7 +72,7 @@ export class CommunicationsService {
 
     const [message] = await db
       .insert(messages)
-      .values({ subject: dto.subject, body: dto.body, createdBy: actorId })
+      .values({ subject, body, templateId, createdBy: actorId } as never)
       .returning();
     if (!message) throw new Error('Failed to create message');
 
@@ -73,13 +95,32 @@ export class CommunicationsService {
       for (const personId of filteredIds.slice(0, 10)) {
         await emailProvider.send({
           to: `${personId}@example.test`,
-          subject: dto.subject,
-          body: dto.body,
+          subject,
+          body,
         });
       }
     }
 
     return message;
+  }
+
+  async listTemplates(): Promise<(typeof templates.$inferSelect)[]> {
+    const db = this.requireDb();
+    return db.select().from(templates);
+  }
+
+  async createTemplate(dto: {
+    name: string;
+    subject: string;
+    body: string;
+  }): Promise<typeof templates.$inferSelect> {
+    const db = this.requireDb();
+    const [row] = await db
+      .insert(templates)
+      .values({ name: dto.name, subject: dto.subject, body: dto.body })
+      .returning();
+    if (!row) throw new Error('Failed to create template');
+    return row;
   }
 
   async listMessages(): Promise<(typeof messages.$inferSelect)[]> {

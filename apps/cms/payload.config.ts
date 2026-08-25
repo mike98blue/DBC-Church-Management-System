@@ -6,7 +6,10 @@ export default buildConfig({
   secret: process.env.PAYLOAD_SECRET ?? 'dev-secret-change-in-production',
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.CMS_DATABASE_URL ?? process.env.DATABASE_URL ?? 'postgresql://churchos:churchos@localhost:5432/churchos',
+      connectionString:
+        process.env.CMS_DATABASE_URL ??
+        process.env.DATABASE_URL ??
+        'postgresql://churchos:churchos@localhost:5432/churchos',
     },
   }),
   collections: [

@@ -1,4 +1,4 @@
-import { IsArray, IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
+import { IsArray, IsObject, IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
 
 export class SendGroupEmailDto {
   @IsOptional()
@@ -17,4 +17,12 @@ export class SendGroupEmailDto {
   @IsString()
   @MaxLength(10000)
   body!: string;
+
+  @IsOptional()
+  @IsUUID('4')
+  templateId?: string;
+
+  @IsOptional()
+  @IsObject()
+  variables?: Record<string, string>;
 }

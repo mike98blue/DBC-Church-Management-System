@@ -76,6 +76,8 @@ export class GivingService {
       amount_total?: number;
       currency?: string;
       payment_status?: string;
+      customer_email?: string;
+      metadata?: Record<string, string>;
     };
     await db.insert(paymentProviderTransactions).values({
       provider: 'stripe',
@@ -88,17 +90,34 @@ export class GivingService {
 
     // Only create a contribution on succeeded checkout
     if (event.type === 'checkout.session.completed' && obj.payment_status === 'paid') {
-      // For mock, we need a donor — create or find a placeholder donor linked to a synthetic person if needed
-      // For now, require a person to exist; use the first person as donor for mock, or skip if none
-      const [firstPerson] = await db.select().from(people).limit(1);
-      if (firstPerson) {
+      // G-08 polish: donor matching — prefer metadata.personId or customer_email, fall back to first person
+      let donorPerson: typeof people.$inferSelect | null = null;
+      const candidatePersonId = obj.metadata?.['personId'];
+      if (candidatePersonId) {
+        const [found] = await db
+          .select()
+          .from(people)
+          .where(eq(people.id, candidatePersonId))
+          .limit(1);
+        if (found) donorPerson = found;
+      }
+      if (!donorPerson && obj.customer_email) {
+        // When C-02 email table lands, this will query person_emails; for now, try people table if it has email
+        // Fallback: no email column yet, so this is a no-op until then
+        void obj.customer_email;
+      }
+      if (!donorPerson) {
+        const [firstPerson] = await db.select().from(people).limit(1);
+        donorPerson = firstPerson ?? null;
+      }
+      if (donorPerson) {
         let [donor] = await db
           .select()
           .from(donors)
-          .where(eq(donors.personId, firstPerson.id))
+          .where(eq(donors.personId, donorPerson.id))
           .limit(1);
         if (!donor) {
-          [donor] = await db.insert(donors).values({ personId: firstPerson.id }).returning();
+          [donor] = await db.insert(donors).values({ personId: donorPerson.id }).returning();
         }
         if (donor) {
           const [contribution] = await db
@@ -113,12 +132,24 @@ export class GivingService {
             })
             .returning();
           if (contribution) {
-            // Allocate to the first fund for mock; real flow would use metadata from the session
-            const [firstFund] = await db.select().from(funds).limit(1);
-            if (firstFund) {
+            // G-08 polish: fund matching via metadata.fundId, fall back to first fund
+            let targetFundId: string | null = obj.metadata?.['fundId'] ?? null;
+            if (targetFundId) {
+              const [foundFund] = await db
+                .select()
+                .from(funds)
+                .where(eq(funds.id, targetFundId))
+                .limit(1);
+              if (!foundFund) targetFundId = null;
+            }
+            if (!targetFundId) {
+              const [firstFund] = await db.select().from(funds).limit(1);
+              targetFundId = firstFund?.id ?? null;
+            }
+            if (targetFundId) {
               await db.insert(contributionAllocations).values({
                 contributionId: contribution.id,
-                fundId: firstFund.id,
+                fundId: targetFundId,
                 amountCents: contribution.amountCents,
               });
             }
