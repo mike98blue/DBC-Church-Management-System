@@ -35,6 +35,8 @@ import { ImportController } from './modules/import/import.controller.js';
 import { ImportService } from './modules/import/import.service.js';
 import { PeopleController } from './modules/people/people.controller.js';
 import { PeopleService } from './modules/people/people.service.js';
+import { TagsController } from './modules/people/tags.controller.js';
+import { TagsService } from './modules/people/tags.service.js';
 import { ReportingController } from './modules/reporting/reporting.controller.js';
 import { ReportingService } from './modules/reporting/reporting.service.js';
 import { SchedulingController } from './modules/scheduling/scheduling.controller.js';
@@ -67,6 +69,7 @@ import { WorshipService } from './modules/worship/worship.service.js';
     UsersController,
     AuditViewerController,
     CalendarController,
+    TagsController,
   ],
   providers: [
     { provide: APP_GUARD, useClass: RateLimitGuard },
@@ -78,6 +81,7 @@ import { WorshipService } from './modules/worship/worship.service.js';
     CareService,
     CheckinService,
     PeopleService,
+    TagsService,
     HouseholdsService,
     EventsService,
     FormsService,
