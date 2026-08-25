@@ -13,13 +13,13 @@
   },
   "dependencies": {
     "@churchos/domain": "workspace:*",
-    "drizzle-orm": "^0.44.0",
+    "drizzle-orm": "^0.45.2",
     "pg": "^8.16.0"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
     "@types/pg": "^8.15.0",
-    "drizzle-kit": "^0.31.0",
+    "drizzle-kit": "^0.31.10",
     "tsx": "^4.20.0",
     "typescript": "^5.9.0"
   }
