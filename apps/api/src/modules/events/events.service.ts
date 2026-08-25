@@ -2,8 +2,17 @@ import { Inject, Injectable, NotFoundException, BadRequestException } from '@nes
 import { asc, count, eq } from 'drizzle-orm';
 import { eventAttendance, eventRegistrations, events } from '@churchos/db';
 import type { Database } from '@churchos/db';
+import { expandRecurrence, parseRecurrenceRule } from './recurrence.js';
 import type { CreateEventDto } from './dto/create-event.dto.js';
 import type { RegisterDto } from './dto/register.dto.js';
+
+export interface EventOccurrence {
+  eventId: string;
+  title: string;
+  location: string | null;
+  startsAt: Date;
+  endsAt: Date;
+}
 
 @Injectable()
 export class EventsService {
@@ -23,6 +32,64 @@ export class EventsService {
       .orderBy(asc(events.startsAt));
   }
 
+  /**
+   * E-02: expand recurring public events into concrete occurrences within
+   * the next `horizonDays` (default 90). Non-recurring events appear once.
+   */
+  async listPublicOccurrences(horizonDays = 90): Promise<EventOccurrence[]> {
+    const db = this.requireDb();
+    const rows = await db
+      .select()
+      .from(events)
+      .where(eq(events.visibility, 'public'))
+      .orderBy(asc(events.startsAt));
+
+    const now = new Date();
+    const windowStart = now;
+    const windowEnd = new Date(now.getTime() + horizonDays * 24 * 60 * 60 * 1000);
+    const out: EventOccurrence[] = [];
+
+    for (const event of rows) {
+      const rule = parseRecurrenceRule(event.recurrenceRule);
+      const defaultDurationMs = 60 * 60 * 1000;
+      const duration = event.endsAt
+        ? event.endsAt.getTime() - event.startsAt.getTime()
+        : defaultDurationMs;
+
+      if (!rule) {
+        if (event.startsAt >= windowStart && event.startsAt < windowEnd) {
+          out.push({
+            eventId: event.id,
+            title: event.title,
+            location: event.location,
+            startsAt: event.startsAt,
+            endsAt: event.endsAt ?? new Date(event.startsAt.getTime() + defaultDurationMs),
+          });
+        }
+        continue;
+      }
+
+      const starts = expandRecurrence(
+        rule,
+        event.startsAt,
+        windowStart,
+        windowEnd,
+        event.recurrenceEndsAt,
+      );
+      for (const startsAt of starts) {
+        out.push({
+          eventId: event.id,
+          title: event.title,
+          location: event.location,
+          startsAt,
+          endsAt: new Date(startsAt.getTime() + duration),
+        });
+      }
+    }
+
+    return out.sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime());
+  }
+
   async listAll(): Promise<(typeof events.$inferSelect)[]> {
     const db = this.requireDb();
     return db.select().from(events).orderBy(asc(events.startsAt));
@@ -37,6 +104,9 @@ export class EventsService {
 
   async create(dto: CreateEventDto): Promise<typeof events.$inferSelect> {
     const db = this.requireDb();
+    if (dto.recurrenceRule && !parseRecurrenceRule(dto.recurrenceRule)) {
+      throw new BadRequestException('Invalid recurrenceRule');
+    }
     const [row] = await db
       .insert(events)
       .values({
@@ -47,6 +117,8 @@ export class EventsService {
         location: dto.location ?? null,
         startsAt: new Date(dto.startsAt),
         endsAt: dto.endsAt ? new Date(dto.endsAt) : null,
+        recurrenceRule: dto.recurrenceRule ?? null,
+        recurrenceEndsAt: dto.recurrenceEndsAt ? new Date(dto.recurrenceEndsAt) : null,
       })
       .returning();
     if (!row) throw new Error('Failed to create event');
