@@ -5,6 +5,8 @@ import { HealthController } from './health/health.controller.js';
 import { OidcAuthGuard } from './common/guards/oidc-auth.guard.js';
 import { RateLimitGuard } from './common/guards/rate-limit.guard.js';
 import { AuditService } from './modules/audit/audit.service.js';
+import { AuditViewerController } from './modules/audit/audit-viewer.controller.js';
+import { AuditViewerService } from './modules/audit/audit-viewer.service.js';
 import { BackgroundChecksController } from './modules/backgroundchecks/background-checks.controller.js';
 import { BackgroundChecksService } from './modules/backgroundchecks/background-checks.service.js';
 import { CareController } from './modules/care/care.controller.js';
@@ -61,11 +63,13 @@ import { WorshipService } from './modules/worship/worship.service.js';
     DashboardController,
     BackgroundChecksController,
     UsersController,
+    AuditViewerController,
   ],
   providers: [
     { provide: APP_GUARD, useClass: RateLimitGuard },
     { provide: APP_GUARD, useClass: OidcAuthGuard },
     AuditService,
+    AuditViewerService,
     BackgroundChecksService,
     CareService,
     CheckinService,
