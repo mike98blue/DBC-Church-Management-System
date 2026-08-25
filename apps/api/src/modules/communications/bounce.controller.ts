@@ -1,6 +1,6 @@
 import { Body, Controller, HttpCode, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { IsOptional, IsString } from 'class-validator';
-import type { BounceService} from './bounce.service.js';
+import type { BounceService } from './bounce.service.js';
 import { type BounceEvent } from './bounce.service.js';
 
 export class BounceWebhookDto {

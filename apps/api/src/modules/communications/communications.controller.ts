@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { PERMISSIONS, assertPermission, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
+import type { CreateTemplateDto } from './dto/create-template.dto.js';
 import type { SendGroupEmailDto } from './dto/send-group-email.dto.js';
 import type { CommunicationsService } from './communications.service.js';
 
@@ -30,6 +31,19 @@ export class CommunicationsController {
   async list(@CurrentActor() actor: Actor | null) {
     assertPermission(actor, PERMISSIONS.COMMUNICATIONS_SEND);
     return this.comms.listMessages();
+  }
+
+  @Post('templates')
+  @HttpCode(201)
+  async createTemplate(@CurrentActor() actor: Actor | null, @Body() dto: CreateTemplateDto) {
+    assertPermission(actor, PERMISSIONS.COMMUNICATIONS_SEND);
+    return this.comms.createTemplate(dto);
+  }
+
+  @Get('templates')
+  async listTemplates(@CurrentActor() actor: Actor | null) {
+    assertPermission(actor, PERMISSIONS.COMMUNICATIONS_SEND);
+    return this.comms.listTemplates();
   }
 
   @Post('unsubscribe/:personId')

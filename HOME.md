@@ -37,6 +37,13 @@ tags: [moc, dashboard]
 - [[security-incident]] — Highly Restricted data incident flow
 - [[account-lockout]] — MFA lockout recovery
 
+## 📝 Active Specs
+
+- [[member-portal]] — Member Portal (§5.7) build plan
+- [[payload-install]] — Payload CMS live install (D-01)
+- [[g08-donor-matching]] — Donor matching polish (G-08)
+- [[h04-email-templates]] — Email templates (H-04)
+
 ## 🧩 Module Map (apps/api/src/modules — 19 modules, `a2b7e34` → `3347255`)
 
 | Domain | Module | Key permission |
