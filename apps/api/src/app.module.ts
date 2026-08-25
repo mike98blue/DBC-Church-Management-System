@@ -10,6 +10,8 @@ import { CheckinController } from './modules/checkin/checkin.controller.js';
 import { CheckinService } from './modules/checkin/checkin.service.js';
 import { CommunicationsController } from './modules/communications/communications.controller.js';
 import { CommunicationsService } from './modules/communications/communications.service.js';
+import { DashboardController } from './modules/dashboard/dashboard.controller.js';
+import { DashboardService } from './modules/dashboard/dashboard.service.js';
 import { EventsController } from './modules/events/events.controller.js';
 import { EventsService } from './modules/events/events.service.js';
 import { FacilityController } from './modules/facility/facility.controller.js';
@@ -51,6 +53,7 @@ import { WorshipService } from './modules/worship/worship.service.js';
     FacilityController,
     WorshipController,
     CheckinController,
+    DashboardController,
   ],
   providers: [
     { provide: APP_GUARD, useClass: MockAuthGuard },
@@ -69,6 +72,7 @@ import { WorshipService } from './modules/worship/worship.service.js';
     SchedulingService,
     FacilityService,
     WorshipService,
+    DashboardService,
   ],
 })
 export class AppModule {}
