@@ -56,11 +56,15 @@ app/portal/
 
 ## Tasks
 
-- [ ] Scaffold `apps/web/app/portal/**` routes + `portal/layout.tsx` (auth)
-- [ ] Build `profile` form (fields: `displayName`/`legalName` from `@churchos/domain`)
-- [ ] Wire `giving` history + statement download (CSV for now, PDF later)
+- [x] Scaffold `apps/web/app/portal/**` routes + `portal/layout.tsx` (auth)
+- [x] Add `portal/giving/manual` + `refund` (G-10/G-13)
+- [x] Wire `portal/profile` and `admin/people` to live API via `lib/api.ts` (`NEXT_PUBLIC_API_URL`, `Authorization: Bearer`)
+- [ ] Build `portal/household` live fetch + `directory` opt-in toggle
+- [ ] Wire `portal/giving` history + statement download (CSV for now, PDF later)
 - [ ] Add `directory` opt-in UI
 - [ ] Playwright E2E: login (mock) → update profile → register for event → download statement
+
+Updated: portal `profile` and `admin/people` now `apiFetch` from `http://localhost:4000` (or `NEXT_PUBLIC_API_URL`). See `apps/web/lib/api.ts` and `apps/admin/lib/api.ts`.
 
 ## Open Decisions
 
