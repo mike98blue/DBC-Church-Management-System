@@ -3,6 +3,7 @@
  * Events (9.4), Forms (9.5), Groups (9.3), Communications (9.7), Giving (9.6), Care (9.9), Scheduling (Phase 2), Facility + Worship + Check-in (Phase 3). Additive.
  */
 import { auditEvents } from './audit.js';
+import { backgroundCheckStatusEnum, backgroundChecks } from './background-checks.js';
 import {
   careCases,
   careNotes,
@@ -42,6 +43,8 @@ import { serviceItems, services, songs } from './worship.js';
 export {
   auditEvents,
   availabilityStatusEnum,
+  backgroundCheckStatusEnum,
+  backgroundChecks,
   careCases,
   careNotes,
   careStatusEnum,
