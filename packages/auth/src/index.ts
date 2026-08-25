@@ -33,6 +33,8 @@ export const PERMISSIONS = {
   WORSHIP_MANAGE: 'worship.manage',
   CHECKIN_OPERATE: 'checkin.operate',
   CHECKIN_ADMIN: 'checkin.admin',
+  BACKGROUNDCHECK_READ: 'backgroundcheck.read',
+  BACKGROUNDCHECK_MANAGE: 'backgroundcheck.manage',
   AUDIT_READ: 'audit.read',
   ADMIN_USERS: 'admin.users',
   ADMIN_ROLES: 'admin.roles',

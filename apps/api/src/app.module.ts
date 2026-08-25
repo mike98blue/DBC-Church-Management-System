@@ -4,6 +4,8 @@ import { MockAuthGuard } from './common/guards/mock-auth.guard.js';
 import { DbModule } from './db/db.module.js';
 import { HealthController } from './health/health.controller.js';
 import { AuditService } from './modules/audit/audit.service.js';
+import { BackgroundChecksController } from './modules/backgroundchecks/background-checks.controller.js';
+import { BackgroundChecksService } from './modules/backgroundchecks/background-checks.service.js';
 import { CareController } from './modules/care/care.controller.js';
 import { CareService } from './modules/care/care.service.js';
 import { CheckinController } from './modules/checkin/checkin.controller.js';
@@ -54,10 +56,12 @@ import { WorshipService } from './modules/worship/worship.service.js';
     WorshipController,
     CheckinController,
     DashboardController,
+    BackgroundChecksController,
   ],
   providers: [
     { provide: APP_GUARD, useClass: MockAuthGuard },
     AuditService,
+    BackgroundChecksService,
     CareService,
     CheckinService,
     PeopleService,
