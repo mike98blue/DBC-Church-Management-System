@@ -56,6 +56,10 @@ export interface Actor {
   id: string;
   permissions: Permission[];
   scopes?: Record<Permission, Scope[]>;
+  /** Canonical person record linked to this identity, if any (B-02). */
+  personId?: string;
+  /** Email claim from the identity token, when present. */
+  email?: string;
 }
 
 export function hasPermission(actor: Actor | null, permission: Permission): boolean {
