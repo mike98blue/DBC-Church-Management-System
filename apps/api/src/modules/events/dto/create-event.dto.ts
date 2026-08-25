@@ -30,4 +30,14 @@ export class CreateEventDto {
   @IsOptional()
   @IsDateString()
   endsAt?: string;
+
+  // E-02: JSON rule, e.g. {"freq":"weekly","interval":1,"byDay":[0]}
+  @IsOptional()
+  @IsString()
+  @MaxLength(200)
+  recurrenceRule?: string;
+
+  @IsOptional()
+  @IsDateString()
+  recurrenceEndsAt?: string;
 }

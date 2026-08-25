@@ -25,10 +25,21 @@ export class EventsController {
   async list(
     @CurrentActor() actor: Actor | null,
     @Query('includePrivate') includePrivate?: string,
+    @Query('occurrences') occurrences?: string,
+    @Query('horizonDays') horizonDays?: string,
   ) {
     if (includePrivate === 'true') {
       assertPermission(actor, PERMISSIONS.EVENTS_MANAGE);
       return this.events.listAll();
+    }
+    if (occurrences === 'true') {
+      // E-02: expanded occurrence list for recurring series (public only)
+      const horizon = horizonDays ? Number(horizonDays) : undefined;
+      return this.events.listPublicOccurrences(
+        Number.isFinite(horizon) && (horizon as number) > 0 && (horizon as number) <= 365
+          ? (horizon as number)
+          : undefined,
+      );
     }
     return this.events.listPublic();
   }

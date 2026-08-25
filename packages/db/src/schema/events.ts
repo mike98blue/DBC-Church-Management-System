@@ -13,6 +13,9 @@ export const events = pgTable(
     location: text('location'),
     startsAt: timestamp('starts_at', { withTimezone: true }).notNull(),
     endsAt: timestamp('ends_at', { withTimezone: true }),
+    // E-02: JSON recurrence rule, e.g. {"freq":"weekly","interval":1,"byDay":[0]}
+    recurrenceRule: text('recurrence_rule'),
+    recurrenceEndsAt: timestamp('recurrence_ends_at', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
   },
