@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Header,
   HttpCode,
   Param,
   ParseUUIDPipe,
@@ -59,5 +60,16 @@ export class FormsController {
   ) {
     assertPermission(actor, PERMISSIONS.FORMS_MANAGE);
     return this.forms.listSubmissions(id);
+  }
+
+  @Get(':id/submissions/export')
+  @Header('Content-Type', 'text/csv')
+  @Header('Content-Disposition', 'attachment; filename="form-submissions.csv"')
+  async exportSubmissions(
+    @CurrentActor() actor: Actor | null,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    assertPermission(actor, PERMISSIONS.FORMS_MANAGE);
+    return this.forms.exportSubmissionsCsv(id);
   }
 }

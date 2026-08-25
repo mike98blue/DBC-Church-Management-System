@@ -134,4 +134,47 @@ export class FormsService {
       .where(eq(formSubmissions.formId, formId))
       .orderBy(asc(formSubmissions.createdAt));
   }
+
+  /**
+   * F-08: CSV export of submissions joined with answers, keyed by field label.
+   * Caller must enforce forms.manage (audited by controller layer).
+   */
+  async exportSubmissionsCsv(formId: string): Promise<string> {
+    const db = this.requireDb();
+    const { fields } = await this.get(formId);
+    const submissions = await db
+      .select()
+      .from(formSubmissions)
+      .where(eq(formSubmissions.formId, formId))
+      .orderBy(asc(formSubmissions.createdAt));
+
+    const fieldLabel = new Map(fields.map((f) => [f.id, f.label]));
+    const csvEscape = (value: string): string =>
+      /[",\n]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value;
+
+    const labels = fields.map((f) => f.label);
+    const header = ['submissionId', 'submittedAt', 'submittedBy', ...labels]
+      .map(csvEscape)
+      .join(',');
+    const lines: string[] = [];
+
+    for (const submission of submissions) {
+      const answers = await db
+        .select()
+        .from(formAnswers)
+        .where(eq(formAnswers.submissionId, submission.id));
+      const byLabel = new Map(
+        answers.map((a) => [fieldLabel.get(a.fieldId) ?? a.fieldId, a.value ?? '']),
+      );
+      const row = [
+        submission.id,
+        submission.createdAt.toISOString(),
+        submission.submittedBy ?? '',
+        ...labels.map((l) => byLabel.get(l) ?? ''),
+      ];
+      lines.push(row.map((cell) => csvEscape(String(cell))).join(','));
+    }
+
+    return [header, ...lines].join('\n');
+  }
 }
