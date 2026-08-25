@@ -18,6 +18,7 @@ import {
   messages,
   templates,
 } from './communications.js';
+import { customFieldDefinitions, customFieldValues, customFieldTypeEnum } from './custom-fields.js';
 import { householdRoleEnum, personStatusEnum } from './enums.js';
 import { eventAttendance, eventRegistrations, events, eventVisibilityEnum } from './events.js';
 import { facilities, reservations, resources, rooms } from './facility.js';
@@ -54,6 +55,9 @@ export {
   communicationPreferences,
   contributionAllocations,
   contributions,
+  customFieldDefinitions,
+  customFieldValues,
+  customFieldTypeEnum,
   donors,
   eventAttendance,
   eventRegistrations,
