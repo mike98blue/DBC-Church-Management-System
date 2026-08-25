@@ -19,6 +19,7 @@ import {
   templates,
 } from './communications.js';
 import { customFieldDefinitions, customFieldValues, customFieldTypeEnum } from './custom-fields.js';
+import { directoryPreferences } from './directory.js';
 import { householdRoleEnum, personStatusEnum } from './enums.js';
 import { eventAttendance, eventRegistrations, events, eventVisibilityEnum } from './events.js';
 import { facilities, reservations, resources, rooms } from './facility.js';
@@ -58,6 +59,7 @@ export {
   customFieldDefinitions,
   customFieldValues,
   customFieldTypeEnum,
+  directoryPreferences,
   donors,
   eventAttendance,
   eventRegistrations,
