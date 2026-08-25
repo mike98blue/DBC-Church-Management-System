@@ -37,6 +37,8 @@ import { PeopleController } from './modules/people/people.controller.js';
 import { PeopleService } from './modules/people/people.service.js';
 import { CustomFieldsController } from './modules/people/custom-fields.controller.js';
 import { CustomFieldsService } from './modules/people/custom-fields.service.js';
+import { DirectoryController } from './modules/directory/directory.controller.js';
+import { DirectoryService } from './modules/directory/directory.service.js';
 import { TagsController } from './modules/people/tags.controller.js';
 import { TagsService } from './modules/people/tags.service.js';
 import { ReportingController } from './modules/reporting/reporting.controller.js';
@@ -73,6 +75,7 @@ import { WorshipService } from './modules/worship/worship.service.js';
     CalendarController,
     TagsController,
     CustomFieldsController,
+    DirectoryController,
   ],
   providers: [
     { provide: APP_GUARD, useClass: RateLimitGuard },
@@ -86,6 +89,7 @@ import { WorshipService } from './modules/worship/worship.service.js';
     PeopleService,
     TagsService,
     CustomFieldsService,
+    DirectoryService,
     HouseholdsService,
     EventsService,
     FormsService,

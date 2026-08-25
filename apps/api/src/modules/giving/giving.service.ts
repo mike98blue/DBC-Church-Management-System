@@ -202,7 +202,10 @@ export class GivingService {
    * (blueprint §12 rule 8, .github instructions). Records a negative-amount
    * reversal contribution linked to the original via providerTransactionId.
    */
-  async refundContribution(contributionId: string, _actorId: string | null): Promise<typeof contributions.$inferSelect> {
+  async refundContribution(
+    contributionId: string,
+    _actorId: string | null,
+  ): Promise<typeof contributions.$inferSelect> {
     const db = this.requireDb();
     const [original] = await db
       .select()

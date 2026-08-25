@@ -15,7 +15,11 @@ import {
 import { PERMISSIONS, assertPermission, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
 import type { ReportingService } from '../reporting/reporting.service.js';
-import type { CreateCheckoutDto, CreateFundDto, CreateManualEntryDto } from './dto/create-fund.dto.js';
+import type {
+  CreateCheckoutDto,
+  CreateFundDto,
+  CreateManualEntryDto,
+} from './dto/create-fund.dto.js';
 import type { GivingService } from './giving.service.js';
 
 @Controller('api/v1/giving')
