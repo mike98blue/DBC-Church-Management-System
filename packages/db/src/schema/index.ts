@@ -38,6 +38,7 @@ import {
   volunteerAssignments,
   volunteerAvailability,
 } from './scheduling.js';
+import { personTags, tags } from './tags.js';
 import { userPersonLinks, users } from './users.js';
 import { serviceItems, services, songs } from './worship.js';
 
@@ -88,6 +89,8 @@ export {
   serviceItems,
   services,
   songs,
+  tags,
+  personTags,
   templates,
   userPersonLinks,
   users,
