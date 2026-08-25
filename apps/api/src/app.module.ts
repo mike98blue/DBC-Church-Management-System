@@ -11,6 +11,8 @@ import { BackgroundChecksController } from './modules/backgroundchecks/backgroun
 import { BackgroundChecksService } from './modules/backgroundchecks/background-checks.service.js';
 import { CareController } from './modules/care/care.controller.js';
 import { CareService } from './modules/care/care.service.js';
+import { CalendarController } from './modules/calendar/calendar.controller.js';
+import { CalendarService } from './modules/calendar/calendar.service.js';
 import { CheckinController } from './modules/checkin/checkin.controller.js';
 import { CheckinService } from './modules/checkin/checkin.service.js';
 import { CommunicationsController } from './modules/communications/communications.controller.js';
@@ -64,6 +66,7 @@ import { WorshipService } from './modules/worship/worship.service.js';
     BackgroundChecksController,
     UsersController,
     AuditViewerController,
+    CalendarController,
   ],
   providers: [
     { provide: APP_GUARD, useClass: RateLimitGuard },
@@ -71,6 +74,7 @@ import { WorshipService } from './modules/worship/worship.service.js';
     AuditService,
     AuditViewerService,
     BackgroundChecksService,
+    CalendarService,
     CareService,
     CheckinService,
     PeopleService,
