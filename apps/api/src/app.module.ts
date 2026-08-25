@@ -27,6 +27,8 @@ import { FormsController } from './modules/forms/forms.controller.js';
 import { FormsService } from './modules/forms/forms.service.js';
 import { GivingController } from './modules/giving/giving.controller.js';
 import { GivingService } from './modules/giving/giving.service.js';
+import { StatementsController } from './modules/giving/statements.controller.js';
+import { StatementsService } from './modules/giving/statements.service.js';
 import { GroupsController } from './modules/groups/groups.controller.js';
 import { GroupsService } from './modules/groups/groups.service.js';
 import { HouseholdsController } from './modules/households/households.controller.js';
@@ -61,6 +63,7 @@ import { WorshipService } from './modules/worship/worship.service.js';
     GroupsController,
     CommunicationsController,
     GivingController,
+    StatementsController,
     ReportingController,
     ImportController,
     CareController,
@@ -96,6 +99,7 @@ import { WorshipService } from './modules/worship/worship.service.js';
     GroupsService,
     CommunicationsService,
     GivingService,
+    StatementsService,
     ReportingService,
     ImportService,
     SchedulingService,
