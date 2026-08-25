@@ -17,6 +17,8 @@ import { CheckinController } from './modules/checkin/checkin.controller.js';
 import { CheckinService } from './modules/checkin/checkin.service.js';
 import { CommunicationsController } from './modules/communications/communications.controller.js';
 import { CommunicationsService } from './modules/communications/communications.service.js';
+import { BounceWebhookController } from './modules/communications/bounce.controller.js';
+import { BounceService } from './modules/communications/bounce.service.js';
 import { DashboardController } from './modules/dashboard/dashboard.controller.js';
 import { DashboardService } from './modules/dashboard/dashboard.service.js';
 import { EventsController } from './modules/events/events.controller.js';
@@ -37,6 +39,8 @@ import { ImportController } from './modules/import/import.controller.js';
 import { ImportService } from './modules/import/import.service.js';
 import { PeopleController } from './modules/people/people.controller.js';
 import { PeopleService } from './modules/people/people.service.js';
+import { DuplicateController } from './modules/people/duplicate.controller.js';
+import { DuplicateService } from './modules/people/duplicate.service.js';
 import { CustomFieldsController } from './modules/people/custom-fields.controller.js';
 import { CustomFieldsService } from './modules/people/custom-fields.service.js';
 import { DirectoryController } from './modules/directory/directory.controller.js';
@@ -62,6 +66,7 @@ import { WorshipService } from './modules/worship/worship.service.js';
     FormsController,
     GroupsController,
     CommunicationsController,
+    BounceWebhookController,
     GivingController,
     StatementsController,
     ReportingController,
@@ -79,6 +84,7 @@ import { WorshipService } from './modules/worship/worship.service.js';
     TagsController,
     CustomFieldsController,
     DirectoryController,
+    DuplicateController,
   ],
   providers: [
     { provide: APP_GUARD, useClass: RateLimitGuard },
@@ -93,11 +99,13 @@ import { WorshipService } from './modules/worship/worship.service.js';
     TagsService,
     CustomFieldsService,
     DirectoryService,
+    DuplicateService,
     HouseholdsService,
     EventsService,
     FormsService,
     GroupsService,
     CommunicationsService,
+    BounceService,
     GivingService,
     StatementsService,
     ReportingService,
