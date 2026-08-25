@@ -1,12 +1,28 @@
 import 'reflect-metadata';
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { logger } from '@churchos/observability';
-import { requestIdMiddleware } from '@churchos/observability';
+import type { NestExpressApplication } from '@nestjs/platform-express';
+import helmet from 'helmet';
+import { logger, requestIdMiddleware } from '@churchos/observability';
 import { AppModule } from './app.module.js';
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // B-07: security headers baseline (CSP allows Next.js dev assets on the web app origin)
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        useDefaults: true,
+        directives: {
+          'default-src': ["'self'"],
+          'frame-ancestors': ["'self'"],
+        },
+      },
+      crossOriginEmbedderPolicy: false,
+    }),
+  );
+  app.set('trust proxy', 1);
   app.use(requestIdMiddleware);
   app.useGlobalPipes(
     new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }),
@@ -15,11 +31,9 @@ async function bootstrap(): Promise<void> {
   const port = Number(process.env.PORT) || 4000;
   await app.listen(port);
   logger.info({ port }, 'ChurchOS API listening');
-  Logger.log(`ChurchOS API listening on port ${port}`, 'Bootstrap');
 }
 
 bootstrap().catch((error) => {
   logger.error({ err: error }, 'Bootstrap failed');
-  console.error(error);
   process.exit(1);
 });
