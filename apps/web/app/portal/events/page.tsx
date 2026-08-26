@@ -26,7 +26,8 @@ export default async function EventsPage() {
       {events.length > 0 || occurrences.length > 0 ? (
         <ul>
           {(occurrences.length > 0 ? occurrences : events).slice(0, 10).map((e) => {
-            const key = (e as { id?: string; eventId?: string }).id ?? (e as { eventId: string }).eventId;
+            const key =
+              (e as { id?: string; eventId?: string }).id ?? (e as { eventId: string }).eventId;
             return (
               <li key={key}>
                 {(e as { title: string }).title} — {(e as { startsAt: string }).startsAt}

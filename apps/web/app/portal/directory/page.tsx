@@ -1,11 +1,18 @@
 import { apiFetch } from '@/lib/api';
 
-export default async function DirectoryPage() {
-  let entries: { id: string; firstName: string; lastName: string }[] = [];
+export default async function DirectoryPage({ searchParams }: { searchParams?: { q?: string } }) {
+  const q = searchParams?.q?.trim() ?? '';
+  let entries: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    directory?: { showEmail?: boolean };
+  }[] = [];
   try {
+    const path = q ? `/api/v1/directory?q=${encodeURIComponent(q)}` : '/api/v1/directory';
     const data = await apiFetch<
       { id: string; firstName: string; lastName: string }[] | { data: unknown[] }
-    >('/api/v1/directory');
+    >(path);
     entries = Array.isArray(data)
       ? (data as { id: string; firstName: string; lastName: string }[])
       : [];
@@ -14,6 +21,12 @@ export default async function DirectoryPage() {
   return (
     <main>
       <h1>Directory</h1>
+      <form>
+        <label>
+          Search: <input name="q" defaultValue={q} placeholder="name" />
+        </label>{' '}
+        <button type="submit">Search</button>
+      </form>
       {entries.length > 0 ? (
         <ul>
           {entries.slice(0, 20).map((e) => (
@@ -24,11 +37,16 @@ export default async function DirectoryPage() {
         </ul>
       ) : (
         <p>
-          Opt-in directory. Toggle <code>showInDirectory</code> via{' '}
-          <code>PUT /api/v1/directory/preferences/:personId</code> — run the API to see live
-          entries.
+          Opt-in directory — only <code>showInDirectory=true</code> entries appear. Toggle via{' '}
+          <code>PUT /api/v1/directory/preferences/:personId</code> (self or{' '}
+          <code>directory.manage</code>).
         </p>
       )}
+      <p>
+        <em>
+          Private by default; respects <code>directory_preferences</code> per field.
+        </em>
+      </p>
     </main>
   );
 }
