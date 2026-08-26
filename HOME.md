@@ -39,13 +39,15 @@ tags: [moc, dashboard]
 
 ## 📝 Active Specs
 
-- [[member-portal]] — Member Portal (§5.7) build plan — now live-wired (profile, household, groups, events, giving, directory)
+- [[member-portal]] — Member Portal (§5.7) — now live-wired (profile, household, groups, events, giving, directory)
 - [[website-seo-analytics]] — SEO/sitemap/analytics (D-13/D-15) — `/sitemap.xml`, `/robots.txt`, Plausible
 - [[payload-install]] — Payload CMS live install (D-01)
+- [[g02-public-giving]] — Public give page (G-02, next)
+- [[e08-event-admin]] — Event admin registrations (E-08, next)
 - [[g08-donor-matching]] — Donor matching polish (G-08)
 - [[h04-email-templates]] — Email templates (H-04)
 
-## 🧩 Module Map (apps/api/src/modules — 22 modules, `bf400c5` → `8baf8b7`)
+## 🧩 Module Map (apps/api/src/modules — 23 modules, `930494b`)
 
 | Domain | Module | Key permission |
 |---|---|---|
@@ -68,8 +70,9 @@ tags: [moc, dashboard]
 
 ## 🗺️ Roadmap Snapshots
 
-- **Main:** `8baf8b7` — portal + CMS wiring, directory search, SEO/sitemap (17 → 22 modules)
-- **Milestones:** M0 Foundation ✅ · M1 Staff Directory ✅ · M2 Digital Front Door ✅ (Next.js + Payload live, ministries/sermons, sitemap, analytics) · M3 Engagement ✅ · M4 Giving ✅ (mock Stripe + manual/refunds/statements) · M5 Production Readiness ✅
+- **Main:** `930494b` — 26 merges, 17 migrations, all gates green
+- **Milestones:** M0 Foundation ✅ · M1 Staff Directory ✅ · M2 Digital Front Door ✅ · M3 Engagement ✅ · M4 Giving ✅ · M5 Production Readiness ✅ (+ portal/CMS wiring, directory search, SEO)
+- **Next 5 (this branch, no pauses):** G-02 public giving → E-08 event admin → PWA manifest → QuickBooks stub → directory UI polish
 - **Next:** **Member Portal** (this note) → Payload CMS install (D) → remaining G-08 donor matching polish → H-06 bounce webhooks
 
 ## 📋 Active Phase — Member Portal (blueprint §5.7)

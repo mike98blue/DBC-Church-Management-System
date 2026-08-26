@@ -27,6 +27,28 @@ export default async function DirectoryPage({ searchParams }: { searchParams?: {
         </label>{' '}
         <button type="submit">Search</button>
       </form>
+      <form style={{ marginTop: '1rem', padding: '1rem', border: '1px solid #ddd' }}>
+        <h2>Your visibility</h2>
+        <label>
+          <input type="checkbox" name="showInDirectory" /> Show me in directory
+        </label>
+        <br />
+        <label>
+          <input type="checkbox" name="showEmail" /> Show email
+        </label>
+        <br />
+        <label>
+          <input type="checkbox" name="showPhone" /> Show phone
+        </label>
+        <br />
+        <label>
+          <input type="checkbox" name="showAddress" /> Show address
+        </label>
+        <br />
+        <button type="submit" formAction="/api/v1/directory/preferences/self">
+          Save preferences (PUT /directory/preferences/:personId)
+        </button>
+      </form>
       {entries.length > 0 ? (
         <ul>
           {entries.slice(0, 20).map((e) => (
