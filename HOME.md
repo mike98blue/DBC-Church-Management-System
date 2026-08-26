@@ -39,15 +39,18 @@ tags: [moc, dashboard]
 
 ## 📝 Active Specs
 
-- [[member-portal]] — Member Portal (§5.7) — now live-wired (profile, household, groups, events, giving, directory)
-- [[website-seo-analytics]] — SEO/sitemap/analytics (D-13/D-15) — `/sitemap.xml`, `/robots.txt`, Plausible
+- [[member-portal]] — Member Portal (§5.7) — live-wired + PWA install prompt
+- [[website-seo-analytics]] — SEO/sitemap/analytics (D-13/D-15)
 - [[payload-install]] — Payload CMS live install (D-01)
-- [[g02-public-giving]] — Public give page (G-02, next)
-- [[e08-event-admin]] — Event admin registrations (E-08, next)
+- [[g02-public-giving]] — Public give page (G-02)
+- [[e08-event-admin]] — Event admin (E-08)
 - [[g08-donor-matching]] — Donor matching polish (G-08)
 - [[h04-email-templates]] — Email templates (H-04)
+- [[pwa-offline]] — PWA offline (stale-while-revalidate)
+- [[directory-admin]] — Directory admin (opt-in)
+- QuickBooks stub — `quickbooks.adapter.ts` (finance)
 
-## 🧩 Module Map (apps/api/src/modules — 23 modules, `930494b`)
+## 🧩 Module Map (apps/api/src/modules — 24 modules, `a26ba26` → `b4fced9` → `bf400c5`)
 
 | Domain | Module | Key permission |
 |---|---|---|
