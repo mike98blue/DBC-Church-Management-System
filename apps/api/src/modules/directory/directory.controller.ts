@@ -5,6 +5,7 @@ import {
   Param,
   ParseUUIDPipe,
   Put,
+  Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -19,9 +20,9 @@ export class DirectoryController {
   constructor(private readonly directory: DirectoryService) {}
 
   @Get()
-  async list(@CurrentActor() actor: Actor | null) {
+  async list(@CurrentActor() actor: Actor | null, @Query('q') q?: string) {
     assertPermission(actor, PERMISSIONS.DIRECTORY_READ);
-    return this.directory.list();
+    return this.directory.list(q);
   }
 
   @Get('preferences/:personId')

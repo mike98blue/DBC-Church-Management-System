@@ -12,16 +12,22 @@ export class DirectoryService {
     return this.db as NonNullable<Database>;
   }
 
-  async list(): Promise<
+  async list(
+    q?: string,
+  ): Promise<
     (typeof people.$inferSelect & { directory: typeof directoryPreferences.$inferSelect | null })[]
   > {
     const db = this.requireDb();
     const prefs = await db.select().from(directoryPreferences);
     const prefMap = new Map(prefs.map((p) => [p.personId, p]));
     const allPeople = await db.select().from(people);
-    // Only those with showInDirectory true
+    const needle = q?.trim().toLowerCase() ?? '';
+    // Only those with showInDirectory true, optionally filtered by q
     return allPeople
       .filter((p) => prefMap.get(p.id)?.showInDirectory)
+      .filter((p) =>
+        needle ? `${p.firstName} ${p.lastName}`.toLowerCase().includes(needle) : true,
+      )
       .map((p) => ({ ...p, directory: prefMap.get(p.id) ?? null }))
       .map((p) => {
         const pref = prefMap.get(p.id);

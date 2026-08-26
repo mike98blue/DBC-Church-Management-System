@@ -39,12 +39,13 @@ tags: [moc, dashboard]
 
 ## 📝 Active Specs
 
-- [[member-portal]] — Member Portal (§5.7) build plan
+- [[member-portal]] — Member Portal (§5.7) build plan — now live-wired (profile, household, groups, events, giving, directory)
+- [[website-seo-analytics]] — SEO/sitemap/analytics (D-13/D-15) — `/sitemap.xml`, `/robots.txt`, Plausible
 - [[payload-install]] — Payload CMS live install (D-01)
 - [[g08-donor-matching]] — Donor matching polish (G-08)
 - [[h04-email-templates]] — Email templates (H-04)
 
-## 🧩 Module Map (apps/api/src/modules — 19 modules, `a2b7e34` → `3347255`)
+## 🧩 Module Map (apps/api/src/modules — 22 modules, `bf400c5` → `8baf8b7`)
 
 | Domain | Module | Key permission |
 |---|---|---|
@@ -67,8 +68,8 @@ tags: [moc, dashboard]
 
 ## 🗺️ Roadmap Snapshots
 
-- **Main:** `3347255` — 26 squash merges from `06641dd`, 17 migrations (`0000`→`0017`), 102 tests (domain 6, auth 5, api 91)
-- **Milestones:** M0 Foundation ✅ · M1 Staff Directory ✅ (API) · M2 Digital Front Door 🔶 (CMS types, Next.js shell) · M3 Engagement ✅ (groups, events, forms, comms) · M4 Giving ✅ (mock Stripe + manual/refunds/statements) · M5 Production Readiness ✅ (pino, runbooks, RPO/RTO)
+- **Main:** `8baf8b7` — portal + CMS wiring, directory search, SEO/sitemap (17 → 22 modules)
+- **Milestones:** M0 Foundation ✅ · M1 Staff Directory ✅ · M2 Digital Front Door ✅ (Next.js + Payload live, ministries/sermons, sitemap, analytics) · M3 Engagement ✅ · M4 Giving ✅ (mock Stripe + manual/refunds/statements) · M5 Production Readiness ✅
 - **Next:** **Member Portal** (this note) → Payload CMS install (D) → remaining G-08 donor matching polish → H-06 bounce webhooks
 
 ## 📋 Active Phase — Member Portal (blueprint §5.7)
