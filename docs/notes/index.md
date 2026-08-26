@@ -11,8 +11,8 @@ Working notes that don't belong in ADRs or runbooks. Link freely with `[[...]]`.
 1. Product name (working: ChurchOS)
 2. Email vendor → [[0009-email-provider]]
 3. RPO/RTO sign-off → [[0010-rpo-rto]]
-4. Giving page UX (G-02) now in portal (`portal/giving`); donor matching → [[g08-donor-matching]] (next)
-5. Email templates (H-04) → [[h04-email-templates]] (next)
+4. Giving page UX (G-02) → [[g02-public-giving]] (in progress)
+5. Event admin UX (E-08) → [[e08-event-admin]] (next)
 
 ## Engineering Scratchpad
 
@@ -20,7 +20,7 @@ Working notes that don't belong in ADRs or runbooks. Link freely with `[[...]]`.
 - Provider mocks go inert when their env key is set (Stripe, background checks)
 - Rate limiting: 120 req/min per IP, `/healthz` exempt — swap store for Redis when multi-instance
 - Migrations: `pnpm db:generate` → review SQL → `pnpm db:migrate`; never edit applied files
-- Current main: `a2b7e34` → see [[HOME]] for full module map (now 19 API modules, 17+ migrations)
+- Current main: `930494b` → see [[HOME]] for full module map (22 → 23 modules, 17 migrations)
 
 ## Meeting / Review Logs
 
