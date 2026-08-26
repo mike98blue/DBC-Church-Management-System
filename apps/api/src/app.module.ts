@@ -55,6 +55,8 @@ import { UsersController } from './modules/users/users.controller.js';
 import { UsersService } from './modules/users/users.service.js';
 import { WorshipController } from './modules/worship/worship.controller.js';
 import { WorshipService } from './modules/worship/worship.service.js';
+import { SmsController } from './modules/sms/sms.controller.js';
+import { SmsService } from './modules/sms/sms.service.js';
 
 @Module({
   imports: [DbModule],
@@ -67,6 +69,7 @@ import { WorshipService } from './modules/worship/worship.service.js';
     GroupsController,
     CommunicationsController,
     BounceWebhookController,
+    SmsController,
     GivingController,
     StatementsController,
     ReportingController,
@@ -106,6 +109,7 @@ import { WorshipService } from './modules/worship/worship.service.js';
     GroupsService,
     CommunicationsService,
     BounceService,
+    SmsService,
     GivingService,
     StatementsService,
     ReportingService,
