@@ -20,6 +20,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <Link href="/admin/groups">Groups</Link>
         <Link href="/admin/events">Events</Link>
         <Link href="/admin/giving">Giving</Link>
+        <Link href="/admin/background-checks">Background Checks</Link>
+        <Link href="/admin/scheduling">Scheduling</Link>
       </nav>
       <section style={{ padding: '1rem' }}>{children}</section>
     </div>
