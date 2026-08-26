@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { PwaInstallPrompt } from '@/components/PwaInstall';
 
 export default function PortalLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -14,6 +15,9 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
         <Link href="/portal/events">Events</Link>
         <Link href="/portal/giving">Giving</Link>
         <Link href="/portal/directory">Directory</Link>
+        <span style={{ marginLeft: 'auto' }}>
+          <PwaInstallPrompt />
+        </span>
       </nav>
       <section style={{ padding: '1rem' }}>{children}</section>
     </div>
