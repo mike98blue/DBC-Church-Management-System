@@ -24,6 +24,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <Link href="/admin/background-checks">Background Checks</Link>
         <Link href="/admin/scheduling">Scheduling</Link>
         <Link href="/admin/quickbooks">QuickBooks</Link>
+        <Link href="/admin/sms">SMS</Link>
       </nav>
       <section style={{ padding: '1rem' }}>{children}</section>
     </div>
