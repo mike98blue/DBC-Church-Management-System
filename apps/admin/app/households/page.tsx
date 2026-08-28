@@ -6,12 +6,24 @@ export default async function AdminHouseholdsPage({
   searchParams?: { q?: string };
 }) {
   const q = searchParams?.q ?? '';
-  let households: { id: string; name: string }[] = [];
+  let households: { id: string; name: string; members?: { personId: string }[] }[] = [];
   try {
-    households = await apiFetch<{ id: string; name: string }[]>('/api/v1/households');
-    if (!Array.isArray(households)) households = [];
+    const data = await apiFetch<{ id: string; name: string }[]>('/api/v1/households');
+    households = Array.isArray(data) ? data : [];
+    // Fetch members for each household (N+1 for MVP, acceptable for small volumes)
+    households = await Promise.all(
+      households.map(async (h) => {
+        try {
+          const detail = await apiFetch<{ members: { personId: string }[] }>(
+            `/api/v1/households/${h.id}`,
+          );
+          return { ...h, members: detail.members };
+        } catch {
+          return h;
+        }
+      }),
+    );
   } catch {}
-  // Simple client-side filter for demo
   if (q) {
     const needle = q.toLowerCase();
     households = households.filter((h) => h.name.toLowerCase().includes(needle));
@@ -27,7 +39,9 @@ export default async function AdminHouseholdsPage({
       {households.length > 0 ? (
         <ul>
           {households.slice(0, 20).map((h) => (
-            <li key={h.id}>{h.name}</li>
+            <li key={h.id}>
+              {h.name} — {h.members?.length ?? 0} members
+            </li>
           ))}
         </ul>
       ) : (
