@@ -11,14 +11,29 @@ export default async function AdminPeoplePage({
   const limit = 20;
   const offset = (page - 1) * limit;
 
-  let people: { id: string; firstName: string; lastName: string; status: string }[] = [];
+  let people: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    status: string;
+    tags?: string[];
+  }[] = [];
   let total = 0;
   try {
     const data = await apiFetch<{
       data: { id: string; firstName: string; lastName: string; status: string }[];
       total: number;
     }>(`/api/v1/people?q=${encodeURIComponent(q)}&limit=${limit}&offset=${offset}`);
-    people = data.data;
+    people = await Promise.all(
+      data.data.map(async (p) => {
+        try {
+          const tags = await apiFetch<string[]>(`/api/v1/tags/person/${p.id}`);
+          return { ...p, tags: Array.isArray(tags) ? tags : [] };
+        } catch {
+          return { ...p, tags: [] };
+        }
+      }),
+    );
     total = data.total;
   } catch {}
 
@@ -33,13 +48,15 @@ export default async function AdminPeoplePage({
         </Link>
       </form>
       <p>
-        {total} total &middot; Page {page} &middot; <code>GET /api/v1/people</code>
+        {total} total &middot; Page {page} &middot; <code>GET /api/v1/people</code> +{' '}
+        <code>/tags/person/:id</code> + <code>/custom-fields/values?personId=</code>
       </p>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
             <th style={{ textAlign: 'left', borderBottom: '1px solid #ddd' }}>Name</th>
             <th style={{ textAlign: 'left', borderBottom: '1px solid #ddd' }}>Status</th>
+            <th style={{ textAlign: 'left', borderBottom: '1px solid #ddd' }}>Tags</th>
           </tr>
         </thead>
         <tbody>
@@ -49,6 +66,7 @@ export default async function AdminPeoplePage({
                 {p.firstName} {p.lastName}
               </td>
               <td>{p.status}</td>
+              <td>{p.tags?.join(', ') ?? ''}</td>
             </tr>
           ))}
         </tbody>
