@@ -15,7 +15,10 @@ export default async function GivePage() {
         Checkout (hosted, no card data touches ChurchOS).
       </p>
       {funds.length > 0 ? (
-        <form action="/api/giving/checkout" method="post">
+        <form
+          action={`${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000'}/api/v1/giving/checkout`}
+          method="post"
+        >
           <label>
             Fund:{' '}
             <select name="fundId">
