@@ -4,6 +4,7 @@ import { postgresAdapter } from '@payloadcms/db-postgres';
 export default buildConfig({
   serverURL: process.env.CMS_SERVER_URL ?? 'http://localhost:3002',
   secret: process.env.PAYLOAD_SECRET ?? 'dev-secret-change-in-production',
+  admin: { meta: { titleSuffix: '— ChurchOS CMS', title: 'ChurchOS CMS' } },
   db: postgresAdapter({
     pool: {
       connectionString:

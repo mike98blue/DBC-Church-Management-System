@@ -1,5 +1,7 @@
 import { cmsFetch } from '@/lib/cms';
 
+export const revalidate = 60;
+
 export default async function MinistriesPage() {
   let ministries: { id: string; name: string; description?: string }[] = [];
   try {
