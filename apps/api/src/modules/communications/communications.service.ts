@@ -5,7 +5,6 @@ import {
   groupMembers,
   messageRecipients,
   messages,
-  people,
   templates,
 } from '@churchos/db';
 import type { Database } from '@churchos/db';
@@ -77,12 +76,6 @@ export class CommunicationsService {
     if (!message) throw new Error('Failed to create message');
 
     if (filteredIds.length) {
-      // Resolve emails — for mock, use stub addresses if people have no email column yet
-      const recipients = await db
-        .select()
-        .from(people)
-        .where(eq(people.id, filteredIds[0] as never));
-      void recipients;
       await db.insert(messageRecipients).values(
         filteredIds.map((personId) => ({
           messageId: message.id,
