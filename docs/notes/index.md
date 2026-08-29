@@ -28,6 +28,7 @@ Working notes that don't belong in ADRs or runbooks. Link freely with `[[...]]`.
 - 2026-08-23 — OIDC guard merged (B-01/B-02); security headers + rate limiting (B-07/B-08)
 - 2026-08-23 — Member directory + G-12 statements merged; portal spec drafted → [[member-portal]]
 - 2026-08-23 — Next: Payload CMS install → [[payload-install]], G-08 polish, H-04 templates
+- 2026-08-23 — A: Admin Groups live search + Public /give amount buttons (no new decisions)
 
 ## Active Specs
 

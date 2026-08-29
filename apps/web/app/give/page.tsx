@@ -18,6 +18,7 @@ export default async function GivePage() {
         <form
           action={`${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000'}/api/v1/giving/checkout`}
           method="post"
+          style={{ display: 'flex', gap: '0.5rem', alignItems: 'end', flexWrap: 'wrap' }}
         >
           <label>
             Fund:{' '}
@@ -28,10 +29,25 @@ export default async function GivePage() {
                 </option>
               ))}
             </select>
-          </label>{' '}
+          </label>
           <label>
-            Amount (USD): <input name="amount" type="number" min="1" step="1" defaultValue="25" />
-          </label>{' '}
+            Amount:{' '}
+            <select name="amount" defaultValue="25">
+              <option value="25">$25</option>
+              <option value="50">$50</option>
+              <option value="100">$100</option>
+              <option value="250">$250</option>
+              <option value="custom">Custom</option>
+            </select>
+          </label>
+          <input
+            name="amountCustom"
+            type="number"
+            min="1"
+            step="1"
+            placeholder="Custom USD"
+            style={{ width: 120 }}
+          />
           <button type="submit">Continue to Checkout</button>
         </form>
       ) : (
@@ -46,6 +62,9 @@ export default async function GivePage() {
           Never enter card data here — the Checkout Session is created server-side and you pay on
           Stripe&apos;s hosted page. The webhook is the source of truth.
         </em>
+      </p>
+      <p>
+        <a href="/give/success">Success</a> · <a href="/give/cancel">Cancel</a> (redirect targets)
       </p>
     </main>
   );
