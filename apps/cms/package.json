@@ -11,8 +11,8 @@
     "typescript": "^5.9.0"
   },
   "dependencies": {
-    "@payloadcms/db-postgres": "^3.88.0",
-    "@payloadcms/next": "^3.88.0",
-    "payload": "^3.88.0"
+    "@payloadcms/db-postgres": "3.89.0-internal.4b0e9b6",
+    "@payloadcms/next": "3.89.0-internal.4b0e9b6",
+    "payload": "3.89.0-internal.4b0e9b6"
   }
 }
