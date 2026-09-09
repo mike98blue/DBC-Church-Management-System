@@ -125,6 +125,8 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      - name: Build packages
+        run: pnpm build
       - name: Install Playwright browser
         run: pnpm exec playwright install --with-deps chromium
       - name: Run security smoke tests
