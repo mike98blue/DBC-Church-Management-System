@@ -147,6 +147,8 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      - name: Build packages
+        run: pnpm build
       - name: Run migrations (staging)
         run: pnpm db:migrate
         env:
