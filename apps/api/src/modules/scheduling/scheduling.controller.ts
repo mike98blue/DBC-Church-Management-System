@@ -28,6 +28,7 @@ export class SchedulingController {
   @Get('availability')
   async listAvailability(@CurrentActor() actor: Actor | null, @Query('personId') personId: string) {
     assertPermission(actor, PERMISSIONS.AVAILABILITY_MANAGE);
+    if (actor?.personId !== personId) assertPermission(actor, PERMISSIONS.SCHEDULING_MANAGE);
     return this.scheduling.listAvailability(personId);
   }
 

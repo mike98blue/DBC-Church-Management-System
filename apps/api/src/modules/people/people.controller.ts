@@ -12,7 +12,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { assertPermission, PERMISSIONS, type Actor } from '@churchos/auth';
+import { assertCanAccessResource, PERMISSIONS, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
 import type { ReportingService } from '../reporting/reporting.service.js';
 import type { CreatePersonDto } from './dto/create-person.dto.js';
@@ -31,7 +31,7 @@ export class PeopleController {
   @Header('Content-Type', 'text/csv')
   @Header('Content-Disposition', 'attachment; filename="people.csv"')
   async export(@CurrentActor() actor: Actor | null) {
-    assertPermission(actor, PERMISSIONS.PEOPLE_EXPORT);
+    assertCanAccessResource(actor, PERMISSIONS.PEOPLE_EXPORT, false);
     return this.reporting.exportPeopleCsv(actor?.id ?? null);
   }
 
@@ -43,7 +43,7 @@ export class PeopleController {
     @Query('limit') limit?: string,
     @Query('offset') offset?: string,
   ) {
-    assertPermission(actor, PERMISSIONS.PEOPLE_READ);
+    assertCanAccessResource(actor, PERMISSIONS.PEOPLE_READ, false);
     return this.people.list({
       q,
       status,
@@ -54,14 +54,14 @@ export class PeopleController {
 
   @Get(':id')
   async get(@CurrentActor() actor: Actor | null, @Param('id', ParseUUIDPipe) id: string) {
-    assertPermission(actor, PERMISSIONS.PEOPLE_READ);
+    assertCanAccessResource(actor, PERMISSIONS.PEOPLE_READ, actor?.personId === id);
     return this.people.get(id);
   }
 
   @Post()
   @HttpCode(201)
   async create(@CurrentActor() actor: Actor | null, @Body() dto: CreatePersonDto) {
-    assertPermission(actor, PERMISSIONS.PEOPLE_WRITE);
+    assertCanAccessResource(actor, PERMISSIONS.PEOPLE_WRITE, false);
     return this.people.create(dto, actor?.id ?? null);
   }
 
@@ -71,7 +71,7 @@ export class PeopleController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdatePersonDto,
   ) {
-    assertPermission(actor, PERMISSIONS.PEOPLE_WRITE);
+    assertCanAccessResource(actor, PERMISSIONS.PEOPLE_WRITE, actor?.personId === id);
     return this.people.update(id, dto, actor?.id ?? null);
   }
 }

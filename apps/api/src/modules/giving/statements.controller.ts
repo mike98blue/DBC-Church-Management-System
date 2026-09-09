@@ -24,6 +24,6 @@ export class StatementsController {
     @Query('endDate') endDate: string,
   ) {
     assertPermission(actor, PERMISSIONS.GIVING_EXPORT);
-    return this.statements.generate(donorId, startDate, endDate);
+    return this.statements.generate(actor, donorId, startDate, endDate);
   }
 }

@@ -1,5 +1,5 @@
 import { Controller, Get, UsePipes, ValidationPipe } from '@nestjs/common';
-import { PERMISSIONS, assertPermission, type Actor } from '@churchos/auth';
+import { assertCanAccessResource, PERMISSIONS, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
 import type { ReportingService } from './reporting.service.js';
 
@@ -10,13 +10,13 @@ export class ReportingController {
 
   @Get('people/counts')
   async peopleCounts(@CurrentActor() actor: Actor | null) {
-    assertPermission(actor, PERMISSIONS.PEOPLE_READ);
+    assertCanAccessResource(actor, PERMISSIONS.PEOPLE_READ, false);
     return this.reporting.peopleCounts();
   }
 
   @Get('giving/by-fund')
   async givingByFund(@CurrentActor() actor: Actor | null) {
-    assertPermission(actor, PERMISSIONS.GIVING_READ);
+    assertCanAccessResource(actor, PERMISSIONS.GIVING_READ, false);
     return this.reporting.givingByFund();
   }
 }

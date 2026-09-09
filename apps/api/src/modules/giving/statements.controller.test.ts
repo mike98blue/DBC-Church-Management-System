@@ -33,6 +33,23 @@ describe('StatementsController', () => {
       '2026-01-01',
       '2026-12-31',
     );
-    expect(service.generate).toHaveBeenCalledOnce();
+    expect(service.generate).toHaveBeenCalledWith(
+      { id: 'u1', permissions: ['giving.export' as never] },
+      '00000000-0000-0000-0000-000000000001',
+      '2026-01-01',
+      '2026-12-31',
+    );
+  });
+  it('forwards actor for resource policy enforcement', async () => {
+    const service = mockService();
+    const c = new StatementsController(service);
+    const actor = { id: 'u1', permissions: ['giving.export' as never], personId: 'p1' };
+    await c.generate(actor, '00000000-0000-0000-0000-000000000001', '2026-01-01', '2026-12-31');
+    expect(service.generate).toHaveBeenCalledWith(
+      actor,
+      '00000000-0000-0000-0000-000000000001',
+      '2026-01-01',
+      '2026-12-31',
+    );
   });
 });

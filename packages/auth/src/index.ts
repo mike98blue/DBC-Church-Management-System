@@ -24,6 +24,7 @@ export const PERMISSIONS = {
   GIVING_EXPORT: 'giving.export',
   CARE_READ: 'care.read',
   CARE_WRITE: 'care.write',
+  PRAYER_WRITE: 'prayer.write',
   PRAYER_READ: 'prayer.read',
   SCHEDULING_MANAGE: 'scheduling.manage',
   AVAILABILITY_MANAGE: 'availability.manage',
@@ -57,7 +58,7 @@ export type Scope = 'organization' | 'campus' | 'ministry' | 'group' | 'self' | 
 export interface Actor {
   id: string;
   permissions: Permission[];
-  scopes?: Record<Permission, Scope[]>;
+  scopes?: Partial<Record<Permission, Scope[]>>;
   /** Canonical person record linked to this identity, if any (B-02). */
   personId?: string;
   /** Email claim from the identity token, when present. */
@@ -73,4 +74,20 @@ export function assertPermission(actor: Actor | null, permission: Permission): v
   if (!hasPermission(actor, permission)) {
     throw new ForbiddenException(`Forbidden: missing ${permission}`);
   }
+}
+
+export function hasScope(actor: Actor | null, permission: Permission, scope: Scope): boolean {
+  if (!actor?.scopes) return false;
+  return (actor.scopes[permission] ?? []).includes(scope);
+}
+
+export function assertCanAccessResource(
+  actor: Actor | null,
+  permission: Permission,
+  isOwner: boolean,
+): void {
+  assertPermission(actor, permission);
+  if (isOwner) return;
+  if (hasScope(actor, permission, 'organization')) return;
+  throw new ForbiddenException(`Forbidden: ${permission} requires ownership or organization scope`);
 }

@@ -13,6 +13,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { PERMISSIONS, assertPermission, type Actor } from '@churchos/auth';
+import { RateLimit } from '../../common/guards/rate-limit.guard.js';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
 import type { ReportingService } from '../reporting/reporting.service.js';
 import type {
@@ -45,6 +46,7 @@ export class GivingController {
 
   @Post('checkout')
   @HttpCode(201)
+  @RateLimit({ windowMs: 60_000, max: 30 })
   async checkout(@CurrentActor() actor: Actor | null, @Body() dto: CreateCheckoutDto) {
     assertPermission(actor, PERMISSIONS.GIVING_READ);
     return this.giving.createCheckoutSession({
@@ -86,13 +88,12 @@ export class GivingController {
 
   @Post('webhook')
   @HttpCode(200)
+  @RateLimit({ windowMs: 60_000, max: 60 })
   async webhook(
-    @Req() req: { rawBody?: string; body?: unknown },
+    @Req() req: { rawBody?: Buffer; body?: unknown },
     @Headers('stripe-signature') signature?: string,
   ) {
-    const raw =
-      (req as unknown as { rawBody?: string }).rawBody ??
-      JSON.stringify((req as unknown as { body?: unknown }).body ?? {});
+    const raw = req.rawBody?.toString('utf8') ?? JSON.stringify(req.body ?? {});
     return this.giving.handleWebhook(raw, signature ?? null);
   }
 }

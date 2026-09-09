@@ -1,4 +1,4 @@
-import { index, pgTable, text, timestamp, uuid, integer } from 'drizzle-orm/pg-core';
+import { index, pgTable, text, timestamp, uuid, integer, uniqueIndex } from 'drizzle-orm/pg-core';
 import { people } from './people.js';
 
 export const funds = pgTable('funds', {
@@ -31,7 +31,10 @@ export const contributions = pgTable(
     providerTransactionId: text('provider_transaction_id'),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   },
-  (table) => [index('contributions_donor_idx').on(table.donorId)],
+  (table) => [
+    index('contributions_donor_idx').on(table.donorId),
+    uniqueIndex('contributions_provider_tx_unique').on(table.providerTransactionId),
+  ],
 );
 
 export const contributionAllocations = pgTable(

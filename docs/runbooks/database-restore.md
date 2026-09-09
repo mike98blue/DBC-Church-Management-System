@@ -24,6 +24,11 @@
 8. **Smoke-test** login, people search, giving history, and a test checkout (mock).
 9. **Log** the incident in `audit_events` and update the quarterly restore test log.
 
+## Automated verification
+
+- Nightly backup job writes checksum to object storage and logs to `audit_events`.
+- Weekly restore verification restores to an ephemeral database and runs `pnpm test` and `pnpm e2e`.
+
 ## Never do
 
 - Do not restore a backup containing real PII to a dev laptop without de-identification approval.

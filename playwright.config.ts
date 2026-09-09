@@ -8,7 +8,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: process.env.E2E_BASE_URL ?? 'http://localhost:3000',
+    baseURL: process.env.E2E_BASE_URL ?? 'http://localhost:4000',
     trace: 'on-first-retry',
   },
   projects: [
@@ -17,6 +17,10 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
-  // In CI, start the API and web before tests:
-  // webServer: { command: 'pnpm dev', url: 'http://localhost:3000', reuseExistingServer: !process.env.CI },
+  webServer: {
+    command: 'pnpm --filter @churchos/api dev',
+    url: 'http://localhost:4000/healthz',
+    reuseExistingServer: !process.env.CI,
+    timeout: 120_000,
+  },
 });

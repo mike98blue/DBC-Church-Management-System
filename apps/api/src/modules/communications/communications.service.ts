@@ -1,10 +1,11 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { eq, inArray } from 'drizzle-orm';
 import {
   communicationPreferences,
   groupMembers,
   messageRecipients,
   messages,
+  people,
   templates,
 } from '@churchos/db';
 import type { Database } from '@churchos/db';
@@ -58,6 +59,17 @@ export class CommunicationsService {
       targetPersonIds = dto.personIds;
     }
 
+    if (targetPersonIds.length) {
+      const validIds = new Set(
+        (
+          await db.select({ id: people.id }).from(people).where(inArray(people.id, targetPersonIds))
+        ).map((person) => person.id),
+      );
+      if (targetPersonIds.some((id) => !validIds.has(id))) {
+        throw new BadRequestException('Recipient person not found');
+      }
+    }
+
     // Filter by communication preferences (opt-out respected everywhere)
     let filteredIds = targetPersonIds;
     if (targetPersonIds.length) {
@@ -85,7 +97,7 @@ export class CommunicationsService {
       );
 
       // Mock send — in production this would be queued via a background worker
-      for (const personId of filteredIds.slice(0, 10)) {
+      for (const personId of filteredIds) {
         await emailProvider.send({
           to: `${personId}@example.test`,
           subject,

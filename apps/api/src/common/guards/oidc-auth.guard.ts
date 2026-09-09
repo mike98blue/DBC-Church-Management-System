@@ -1,6 +1,22 @@
 import type { CanActivate } from '@nestjs/common';
-import { type ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
-import type { Actor, Permission } from '@churchos/auth';
+import {
+  type ExecutionContext,
+  Inject,
+  Injectable,
+  Optional,
+  UnauthorizedException,
+} from '@nestjs/common';
+import type { Actor, Permission, Scope } from '@churchos/auth';
+import { and, eq } from 'drizzle-orm';
+import {
+  permissions,
+  rolePermissions,
+  userPermissionScopes,
+  userPersonLinks,
+  userRoles,
+  users,
+} from '@churchos/db';
+import type { Database } from '@churchos/db';
 import {
   createLocalJWKSet,
   createRemoteJWKSet,
@@ -41,10 +57,15 @@ export function claimsToActor(payload: JWTPayload): Actor | null {
 @Injectable()
 export class OidcAuthGuard implements CanActivate {
   private readonly getKey?: JWTVerifyGetKey;
+  private readonly testMode: boolean;
   private readonly issuer?: string;
   private readonly audience?: string;
 
-  constructor(testKey?: JWTVerifyGetKey) {
+  constructor(
+    @Optional() @Inject('OIDC_TEST_KEY') testKey?: JWTVerifyGetKey,
+    @Optional() @Inject('DATABASE') private readonly db: Database | null = null,
+  ) {
+    this.testMode = Boolean(testKey);
     this.issuer = process.env.OIDC_ISSUER;
     this.audience = process.env.OIDC_AUDIENCE;
     if (testKey) {
@@ -55,6 +76,12 @@ export class OidcAuthGuard implements CanActivate {
       );
     } else if (process.env.OIDC_JWKS_URI) {
       this.getKey = createRemoteJWKSet(new URL(process.env.OIDC_JWKS_URI));
+    }
+    if (!testKey && this.getKey && (!this.issuer || !this.audience)) {
+      throw new Error('OIDC_ISSUER and OIDC_AUDIENCE are required when OIDC is configured');
+    }
+    if (!testKey && process.env.NODE_ENV === 'production' && !this.getKey) {
+      throw new Error('OIDC configuration is required in production');
     }
   }
 
@@ -84,14 +111,18 @@ export class OidcAuthGuard implements CanActivate {
         });
         const actor = claimsToActor(payload);
         if (!actor) throw new UnauthorizedException('Token missing sub claim');
-        return actor;
+        return this.testMode ? actor : this.loadApplicationActor(actor);
       } catch (error) {
         if (error instanceof UnauthorizedException) throw error;
         throw new UnauthorizedException('Invalid or expired token');
       }
     }
 
-    // Dev fallback — unsigned mock tokens. Never active when OIDC is configured.
+    // Unsigned tokens are limited to local development and automated tests.
+    const allowUnsigned =
+      process.env.NODE_ENV === 'test' ||
+      (process.env.NODE_ENV === 'development' && process.env.ALLOW_UNSIGNED_DEV_AUTH === 'true');
+    if (!allowUnsigned) throw new UnauthorizedException('OIDC authentication is not configured');
     try {
       const json = Buffer.from(token.replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString(
         'utf8',
@@ -100,5 +131,45 @@ export class OidcAuthGuard implements CanActivate {
     } catch {
       return null;
     }
+  }
+
+  private async loadApplicationActor(claims: Actor): Promise<Actor> {
+    if (!this.db) throw new UnauthorizedException('Application identity store is unavailable');
+    const [user] = await this.db
+      .select()
+      .from(users)
+      .where(and(eq(users.externalSubject, claims.id), eq(users.isActive, true)))
+      .limit(1);
+    if (!user) throw new UnauthorizedException('User is not provisioned or is inactive');
+
+    const assigned = await this.db
+      .select({ name: permissions.name })
+      .from(userRoles)
+      .innerJoin(rolePermissions, eq(rolePermissions.roleId, userRoles.roleId))
+      .innerJoin(permissions, eq(permissions.id, rolePermissions.permissionId))
+      .where(eq(userRoles.userId, user.id));
+    const [link] = await this.db
+      .select({ personId: userPersonLinks.personId })
+      .from(userPersonLinks)
+      .where(eq(userPersonLinks.userId, user.id))
+      .limit(1);
+    const scopeRows = await this.db
+      .select({ permission: userPermissionScopes.permission, scope: userPermissionScopes.scope })
+      .from(userPermissionScopes)
+      .where(eq(userPermissionScopes.userId, user.id));
+    const scopes: Partial<Record<Permission, Scope[]>> = {};
+    for (const row of scopeRows) {
+      const perm = row.permission as Permission;
+      const scope = row.scope as Scope;
+      if (!scopes[perm]) scopes[perm] = [];
+      scopes[perm]!.push(scope);
+    }
+    return {
+      id: user.id,
+      permissions: assigned.map((item) => item.name as Permission),
+      scopes: Object.keys(scopes).length ? scopes : undefined,
+      personId: link?.personId,
+      email: user.email ?? claims.email,
+    };
   }
 }

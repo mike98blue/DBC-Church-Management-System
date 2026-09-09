@@ -11,6 +11,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { PERMISSIONS, assertPermission, type Actor } from '@churchos/auth';
+import { RateLimit } from '../../common/guards/rate-limit.guard.js';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
 import type { CreateFormDto } from './dto/create-form.dto.js';
 import type { SubmitFormDto } from './dto/submit-form.dto.js';
@@ -39,17 +40,22 @@ export class FormsController {
   }
 
   @Get(':id')
-  async get(@Param('id', ParseUUIDPipe) id: string) {
-    return this.forms.get(id);
+  async get(@CurrentActor() actor: Actor | null, @Param('id', ParseUUIDPipe) id: string) {
+    const result = await this.forms.get(id);
+    if (result.form.visibility !== 'public') assertPermission(actor, PERMISSIONS.FORMS_MANAGE);
+    return result;
   }
 
   @Post(':id/submissions')
   @HttpCode(201)
+  @RateLimit({ windowMs: 60_000, max: 10 })
   async submit(
     @CurrentActor() actor: Actor | null,
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: SubmitFormDto,
   ) {
+    const form = await this.forms.get(id);
+    if (form.form.visibility !== 'public') assertPermission(actor, PERMISSIONS.FORMS_MANAGE);
     return this.forms.submit(id, dto, actor?.id ?? null);
   }
 

@@ -10,7 +10,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { assertPermission, PERMISSIONS, type Actor } from '@churchos/auth';
+import { assertCanAccessResource, PERMISSIONS, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
 import type { AddMemberDto } from './dto/add-member.dto.js';
 import type { CreateHouseholdDto } from './dto/create-household.dto.js';
@@ -23,20 +23,20 @@ export class HouseholdsController {
 
   @Get()
   async list(@CurrentActor() actor: Actor | null) {
-    assertPermission(actor, PERMISSIONS.HOUSEHOLDS_READ);
+    assertCanAccessResource(actor, PERMISSIONS.HOUSEHOLDS_READ, false);
     return this.households.list();
   }
 
   @Get(':id')
   async get(@CurrentActor() actor: Actor | null, @Param('id', ParseUUIDPipe) id: string) {
-    assertPermission(actor, PERMISSIONS.HOUSEHOLDS_READ);
+    assertCanAccessResource(actor, PERMISSIONS.HOUSEHOLDS_READ, false);
     return this.households.get(id);
   }
 
   @Post()
   @HttpCode(201)
   async create(@CurrentActor() actor: Actor | null, @Body() dto: CreateHouseholdDto) {
-    assertPermission(actor, PERMISSIONS.HOUSEHOLDS_WRITE);
+    assertCanAccessResource(actor, PERMISSIONS.HOUSEHOLDS_WRITE, false);
     return this.households.create(dto, actor?.id ?? null);
   }
 
@@ -47,7 +47,7 @@ export class HouseholdsController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: AddMemberDto,
   ) {
-    assertPermission(actor, PERMISSIONS.HOUSEHOLDS_WRITE);
+    assertCanAccessResource(actor, PERMISSIONS.HOUSEHOLDS_WRITE, false);
     return this.households.addMember(id, dto, actor?.id ?? null);
   }
 
@@ -58,7 +58,7 @@ export class HouseholdsController {
     @Param('id', ParseUUIDPipe) id: string,
     @Param('personId', ParseUUIDPipe) personId: string,
   ) {
-    assertPermission(actor, PERMISSIONS.HOUSEHOLDS_WRITE);
+    assertCanAccessResource(actor, PERMISSIONS.HOUSEHOLDS_WRITE, false);
     await this.households.removeMember(id, personId, actor?.id ?? null);
   }
 }

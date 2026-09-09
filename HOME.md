@@ -37,6 +37,15 @@ tags: [moc, dashboard]
 - [[security-incident]] — Highly Restricted data incident flow
 - [[account-lockout]] — MFA lockout recovery
 
+## 🔐 Security Remediation
+
+- [[security-remediation-index]] — release-blocking remediation dashboard
+- [[security-remediation-backlog]] — tracked tasks and acceptance rule
+- [[authorization-model]] — application-owned authorization model
+- [[payment-security]] — giving and webhook security rules
+- [[production-readiness]] — deployment and recovery gates
+- [[test-coverage-matrix]] — security test coverage
+
 ## 📝 Active Specs
 
 - [[member-portal]] — Member Portal (§5.7) — live-wired + PWA install prompt

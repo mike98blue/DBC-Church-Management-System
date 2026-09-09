@@ -106,10 +106,28 @@ jobs:
       - name: Audit production dependencies
         run: pnpm audit --prod --audit-level high
 
+  e2e:
+    name: Security smoke tests
+    runs-on: ubuntu-latest
+    needs: [lint, typecheck, test, build]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Install Playwright browser
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Run security smoke tests
+        run: pnpm e2e
+
   deploy-staging:
     name: Deploy staging (migrations)
     runs-on: ubuntu-latest
-    needs: [lint, typecheck, test, build, audit]
+    needs: [lint, typecheck, test, build, audit, e2e]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     environment: staging
     steps:

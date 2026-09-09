@@ -24,7 +24,7 @@ export class CheckinController {
   @HttpCode(201)
   async checkIn(@CurrentActor() actor: Actor | null, @Body() dto: CheckInDto) {
     assertPermission(actor, PERMISSIONS.CHECKIN_OPERATE);
-    return this.checkin.checkIn(dto, actor?.id ?? null);
+    return this.checkin.checkIn(dto, actor);
   }
 
   @Post(':id/check-out')
@@ -35,7 +35,7 @@ export class CheckinController {
     @Body() dto: CheckOutDto,
   ) {
     assertPermission(actor, PERMISSIONS.CHECKIN_OPERATE);
-    return this.checkin.checkOut(id, dto.pickupCode, actor?.id ?? null);
+    return this.checkin.checkOut(id, dto.pickupCode, actor);
   }
 
   @Get('roster')

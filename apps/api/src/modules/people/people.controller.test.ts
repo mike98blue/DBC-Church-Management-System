@@ -29,12 +29,34 @@ describe('PeopleController', () => {
     );
   });
 
-  it('allows list when actor has people.read', async () => {
+  it('allows list when actor has people.read with organization scope', async () => {
     const service = mockService();
     const controller = new PeopleController(service, mockReporting());
-    const actor = { id: 'u1', permissions: [PERMISSIONS.PEOPLE_READ] };
+    const actor = {
+      id: 'u1',
+      permissions: [PERMISSIONS.PEOPLE_READ],
+      scopes: { [PERMISSIONS.PEOPLE_READ]: ['organization' as const] },
+    };
     await controller.list(actor);
     expect(service.list).toHaveBeenCalledOnce();
+  });
+
+  it('rejects list when actor lacks organization scope', async () => {
+    const controller = new PeopleController(mockService(), mockReporting());
+    const actor = { id: 'u1', permissions: [PERMISSIONS.PEOPLE_READ] };
+    await expect(controller.list(actor)).rejects.toThrow(ForbiddenException);
+  });
+
+  it('allows self get without organization scope', async () => {
+    const service = mockService();
+    const controller = new PeopleController(service, mockReporting());
+    const actor = {
+      id: 'u1',
+      permissions: [PERMISSIONS.PEOPLE_READ],
+      personId: '00000000-0000-0000-0000-000000000001',
+    };
+    await controller.get(actor, '00000000-0000-0000-0000-000000000001');
+    expect(service.get).toHaveBeenCalledOnce();
   });
 
   it('rejects create when actor lacks people.write', async () => {

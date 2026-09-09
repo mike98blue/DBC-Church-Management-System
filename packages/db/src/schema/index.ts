@@ -34,12 +34,13 @@ import {
 import { groupMembers, groups, groupTypeEnum, groupVisibilityEnum } from './groups.js';
 import { households, householdMembers } from './households.js';
 import { people } from './people.js';
-import { permissions, rolePermissions, roles } from './roles.js';
+import { permissions, rolePermissions, roles, userPermissionScopes, userRoles } from './roles.js';
 import {
   availabilityStatusEnum,
   volunteerAssignments,
   volunteerAvailability,
 } from './scheduling.js';
+import { idempotencyKeys } from './idempotency.js';
 import { personTags, tags } from './tags.js';
 import { userPersonLinks, users } from './users.js';
 import { serviceItems, services, songs } from './worship.js';
@@ -91,6 +92,8 @@ export {
   resources,
   rolePermissions,
   roles,
+  userPermissionScopes,
+  userRoles,
   rooms,
   serviceItems,
   services,
@@ -102,4 +105,5 @@ export {
   users,
   volunteerAssignments,
   volunteerAvailability,
+  idempotencyKeys,
 };

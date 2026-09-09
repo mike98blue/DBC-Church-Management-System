@@ -127,6 +127,34 @@
       "when": 1787661142396,
       "tag": "0017_marvelous_captain_midlands",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1788025904105,
+      "tag": "0018_quick_pride",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1788026353758,
+      "tag": "0019_premium_ikaris",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1788975547460,
+      "tag": "0020_thick_doctor_strange",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1788976586317,
+      "tag": "0021_rainy_felicia_hardy",
+      "breakpoints": true
     }
   ]
 }

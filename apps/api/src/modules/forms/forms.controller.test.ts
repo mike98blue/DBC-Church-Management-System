@@ -7,7 +7,7 @@ function mockService(): FormsService {
   return {
     create: vi.fn().mockResolvedValue({ id: 'f1' }),
     list: vi.fn().mockResolvedValue([{ id: 'f1', visibility: 'public' }]),
-    get: vi.fn().mockResolvedValue({ form: { id: 'f1' }, fields: [] }),
+    get: vi.fn().mockResolvedValue({ form: { id: 'f1', visibility: 'public' }, fields: [] }),
     submit: vi.fn().mockResolvedValue({ id: 's1' }),
     listSubmissions: vi.fn().mockResolvedValue([]),
     exportSubmissionsCsv: vi.fn().mockResolvedValue('submissionId,submittedAt\n'),
