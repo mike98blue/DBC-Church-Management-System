@@ -53,7 +53,7 @@ status: active
 - [x] SEC-OPS-02 Implement production network, encrypted DB, and secret management scaffold
 - [x] SEC-OPS-03 Document automated backup and restore verification (runbook + audit requirement)
 - [x] SEC-OPS-04 Add production infrastructure scaffold and deployment readiness checks
-- [x] SEC-OPS-05 Remediate dependency vulnerabilities — Next.js (critical) and qs fixed; 1 moderate (Payload <=3.88) remains awaiting stable 3.89
+- [x] SEC-OPS-05 Remediate dependency vulnerabilities — Next.js (critical), qs, and Payload (3.89.0-internal.4b0e9b6) fixed; 0 vulnerabilities
 
 ## Completion Rule
 
