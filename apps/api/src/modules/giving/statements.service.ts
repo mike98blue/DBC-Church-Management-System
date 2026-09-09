@@ -1,6 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { and, asc, between, eq } from 'drizzle-orm';
 import { contributionAllocations, contributions, donors, funds, people } from '@churchos/db';
+import { assertCanAccessResource, type Actor } from '@churchos/auth';
 import type { Database } from '@churchos/db';
 
 export interface Statement {
@@ -28,7 +29,12 @@ export class StatementsService {
     return this.db as NonNullable<Database>;
   }
 
-  async generate(donorId: string, startDate: string, endDate: string): Promise<Statement> {
+  async generate(
+    actor: Actor | null,
+    donorId: string,
+    startDate: string,
+    endDate: string,
+  ): Promise<Statement> {
     const db = this.requireDb();
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -38,6 +44,7 @@ export class StatementsService {
 
     const [donor] = await db.select().from(donors).where(eq(donors.id, donorId)).limit(1);
     if (!donor) throw new NotFoundException('Donor not found');
+    assertCanAccessResource(actor, 'giving.export', actor?.personId === donor.personId);
     const [person] = await db.select().from(people).where(eq(people.id, donor.personId)).limit(1);
     if (!person) throw new NotFoundException('Person not found for donor');
 

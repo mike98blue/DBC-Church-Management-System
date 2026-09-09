@@ -1,0 +1,1263 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/healthz": {
+      "get": {
+        "operationId": "check",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Health"
+        ]
+      }
+    },
+    "/api/v1/people/export": {
+      "get": {
+        "operationId": "export",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "People"
+        ]
+      }
+    },
+    "/api/v1/people": {
+      "get": {
+        "operationId": "list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "People"
+        ]
+      },
+      "post": {
+        "operationId": "create",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "People"
+        ]
+      }
+    },
+    "/api/v1/people/{id}": {
+      "get": {
+        "operationId": "get",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "People"
+        ]
+      },
+      "patch": {
+        "operationId": "update",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "People"
+        ]
+      }
+    },
+    "/api/v1/households": {
+      "get": {
+        "operationId": "list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Households"
+        ]
+      },
+      "post": {
+        "operationId": "create",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Households"
+        ]
+      }
+    },
+    "/api/v1/households/{id}": {
+      "get": {
+        "operationId": "get",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Households"
+        ]
+      }
+    },
+    "/api/v1/households/{id}/members": {
+      "post": {
+        "operationId": "addMember",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Households"
+        ]
+      }
+    },
+    "/api/v1/households/{id}/members/{personId}": {
+      "delete": {
+        "operationId": "removeMember",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Households"
+        ]
+      }
+    },
+    "/api/v1/events": {
+      "get": {
+        "operationId": "list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Events"
+        ]
+      },
+      "post": {
+        "operationId": "create",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Events"
+        ]
+      }
+    },
+    "/api/v1/events/{id}": {
+      "get": {
+        "operationId": "get",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Events"
+        ]
+      }
+    },
+    "/api/v1/events/{id}/registrations": {
+      "post": {
+        "operationId": "register",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Events"
+        ]
+      },
+      "get": {
+        "operationId": "listRegistrations",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Events"
+        ]
+      }
+    },
+    "/api/v1/events/{id}/attendance": {
+      "post": {
+        "operationId": "recordAttendance",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Events"
+        ]
+      },
+      "get": {
+        "operationId": "listAttendance",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Events"
+        ]
+      }
+    },
+    "/api/v1/forms": {
+      "post": {
+        "operationId": "create",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Forms"
+        ]
+      },
+      "get": {
+        "operationId": "list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Forms"
+        ]
+      }
+    },
+    "/api/v1/forms/{id}": {
+      "get": {
+        "operationId": "get",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Forms"
+        ]
+      }
+    },
+    "/api/v1/forms/{id}/submissions": {
+      "post": {
+        "operationId": "submit",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Forms"
+        ]
+      },
+      "get": {
+        "operationId": "listSubmissions",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Forms"
+        ]
+      }
+    },
+    "/api/v1/forms/{id}/submissions/export": {
+      "get": {
+        "operationId": "exportSubmissions",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Forms"
+        ]
+      }
+    },
+    "/api/v1/groups": {
+      "get": {
+        "operationId": "list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Groups"
+        ]
+      },
+      "post": {
+        "operationId": "create",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Groups"
+        ]
+      }
+    },
+    "/api/v1/groups/{id}": {
+      "get": {
+        "operationId": "get",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Groups"
+        ]
+      }
+    },
+    "/api/v1/groups/{id}/members": {
+      "post": {
+        "operationId": "addMember",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Groups"
+        ]
+      }
+    },
+    "/api/v1/groups/{id}/members/{personId}": {
+      "delete": {
+        "operationId": "removeMember",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Groups"
+        ]
+      }
+    },
+    "/api/v1/communications/send": {
+      "post": {
+        "operationId": "send",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Communications"
+        ]
+      }
+    },
+    "/api/v1/communications/messages": {
+      "get": {
+        "operationId": "list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Communications"
+        ]
+      }
+    },
+    "/api/v1/communications/templates": {
+      "post": {
+        "operationId": "createTemplate",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Communications"
+        ]
+      },
+      "get": {
+        "operationId": "listTemplates",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Communications"
+        ]
+      }
+    },
+    "/api/v1/communications/unsubscribe/{personId}": {
+      "post": {
+        "operationId": "unsubscribe",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Communications"
+        ]
+      }
+    },
+    "/api/v1/communications/webhook/bounce": {
+      "post": {
+        "operationId": "handle",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "BounceWebhook"
+        ]
+      }
+    },
+    "/api/v1/sms/send": {
+      "post": {
+        "operationId": "send",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Sms"
+        ]
+      }
+    },
+    "/api/v1/giving/funds": {
+      "get": {
+        "operationId": "listFunds",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Giving"
+        ]
+      },
+      "post": {
+        "operationId": "createFund",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Giving"
+        ]
+      }
+    },
+    "/api/v1/giving/checkout": {
+      "post": {
+        "operationId": "checkout",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Giving"
+        ]
+      }
+    },
+    "/api/v1/giving/contributions": {
+      "get": {
+        "operationId": "listContributions",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Giving"
+        ]
+      }
+    },
+    "/api/v1/giving/contributions/manual": {
+      "post": {
+        "operationId": "createManualEntry",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Giving"
+        ]
+      }
+    },
+    "/api/v1/giving/contributions/{id}/refund": {
+      "post": {
+        "operationId": "refund",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Giving"
+        ]
+      }
+    },
+    "/api/v1/giving/export": {
+      "get": {
+        "operationId": "exportGiving",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Giving"
+        ]
+      }
+    },
+    "/api/v1/giving/webhook": {
+      "post": {
+        "operationId": "webhook",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Giving"
+        ]
+      }
+    },
+    "/api/v1/giving/statements/{donorId}": {
+      "get": {
+        "operationId": "generate",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Statements"
+        ]
+      }
+    },
+    "/api/v1/reports/people/counts": {
+      "get": {
+        "operationId": "peopleCounts",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Reporting"
+        ]
+      }
+    },
+    "/api/v1/reports/giving/by-fund": {
+      "get": {
+        "operationId": "givingByFund",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Reporting"
+        ]
+      }
+    },
+    "/api/v1/import/people/preview": {
+      "post": {
+        "operationId": "preview",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Import"
+        ]
+      }
+    },
+    "/api/v1/care/prayers": {
+      "post": {
+        "operationId": "createPrayer",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Care"
+        ]
+      },
+      "get": {
+        "operationId": "listPrayers",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Care"
+        ]
+      }
+    },
+    "/api/v1/care/cases": {
+      "post": {
+        "operationId": "createCase",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Care"
+        ]
+      }
+    },
+    "/api/v1/care/cases/{id}": {
+      "get": {
+        "operationId": "getCase",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Care"
+        ]
+      }
+    },
+    "/api/v1/care/cases/{id}/notes": {
+      "post": {
+        "operationId": "addNote",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Care"
+        ]
+      }
+    },
+    "/api/v1/scheduling/availability": {
+      "post": {
+        "operationId": "setAvailability",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Scheduling"
+        ]
+      },
+      "get": {
+        "operationId": "listAvailability",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Scheduling"
+        ]
+      }
+    },
+    "/api/v1/scheduling/assignments": {
+      "post": {
+        "operationId": "createAssignment",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Scheduling"
+        ]
+      },
+      "get": {
+        "operationId": "listAssignments",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Scheduling"
+        ]
+      }
+    },
+    "/api/v1/facilities": {
+      "get": {
+        "operationId": "list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Facility"
+        ]
+      },
+      "post": {
+        "operationId": "create",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Facility"
+        ]
+      }
+    },
+    "/api/v1/facilities/rooms": {
+      "get": {
+        "operationId": "listRooms",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Facility"
+        ]
+      },
+      "post": {
+        "operationId": "createRoom",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Facility"
+        ]
+      }
+    },
+    "/api/v1/facilities/reservations": {
+      "get": {
+        "operationId": "listReservations",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Facility"
+        ]
+      },
+      "post": {
+        "operationId": "createReservation",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Facility"
+        ]
+      }
+    },
+    "/api/v1/worship/songs": {
+      "post": {
+        "operationId": "createSong",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Worship"
+        ]
+      },
+      "get": {
+        "operationId": "listSongs",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Worship"
+        ]
+      }
+    },
+    "/api/v1/worship/services": {
+      "post": {
+        "operationId": "createService",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Worship"
+        ]
+      }
+    },
+    "/api/v1/worship/services/{id}": {
+      "get": {
+        "operationId": "getService",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Worship"
+        ]
+      }
+    },
+    "/api/v1/worship/services/{id}/items": {
+      "post": {
+        "operationId": "addItem",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Worship"
+        ]
+      }
+    },
+    "/api/v1/checkin/check-in": {
+      "post": {
+        "operationId": "checkIn",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Checkin"
+        ]
+      }
+    },
+    "/api/v1/checkin/{id}/check-out": {
+      "post": {
+        "operationId": "checkOut",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Checkin"
+        ]
+      }
+    },
+    "/api/v1/checkin/roster": {
+      "get": {
+        "operationId": "roster",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Checkin"
+        ]
+      }
+    },
+    "/api/v1/dashboard/summary": {
+      "get": {
+        "operationId": "summary",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Dashboard"
+        ]
+      }
+    },
+    "/api/v1/background-checks": {
+      "post": {
+        "operationId": "request",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "BackgroundChecks"
+        ]
+      },
+      "get": {
+        "operationId": "list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "BackgroundChecks"
+        ]
+      }
+    },
+    "/api/v1/admin/users": {
+      "post": {
+        "operationId": "upsert",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      },
+      "get": {
+        "operationId": "list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/api/v1/admin/users/by-subject": {
+      "get": {
+        "operationId": "bySubject",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/api/v1/admin/audit": {
+      "get": {
+        "operationId": "list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "AuditViewer"
+        ]
+      }
+    },
+    "/api/v1/calendar/events.ics": {
+      "get": {
+        "operationId": "publicFeed",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Calendar"
+        ]
+      }
+    },
+    "/api/v1/tags": {
+      "post": {
+        "operationId": "create",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tags"
+        ]
+      },
+      "get": {
+        "operationId": "list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tags"
+        ]
+      }
+    },
+    "/api/v1/tags/assign": {
+      "post": {
+        "operationId": "assign",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tags"
+        ]
+      }
+    },
+    "/api/v1/tags/{personId}/{tagName}": {
+      "delete": {
+        "operationId": "unassign",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tags"
+        ]
+      }
+    },
+    "/api/v1/tags/person/{personId}": {
+      "get": {
+        "operationId": "personTags",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Tags"
+        ]
+      }
+    },
+    "/api/v1/custom-fields/definitions": {
+      "post": {
+        "operationId": "createDefinition",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "CustomFields"
+        ]
+      },
+      "get": {
+        "operationId": "listDefinitions",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "CustomFields"
+        ]
+      }
+    },
+    "/api/v1/custom-fields/values": {
+      "post": {
+        "operationId": "setValue",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "CustomFields"
+        ]
+      },
+      "get": {
+        "operationId": "getValues",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "CustomFields"
+        ]
+      }
+    },
+    "/api/v1/directory": {
+      "get": {
+        "operationId": "list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Directory"
+        ]
+      }
+    },
+    "/api/v1/directory/preferences/{personId}": {
+      "get": {
+        "operationId": "getPreferences",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Directory"
+        ]
+      },
+      "put": {
+        "operationId": "updatePreferences",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Directory"
+        ]
+      }
+    },
+    "/api/v1/people/duplicate-check": {
+      "post": {
+        "operationId": "check",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Duplicate"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "ChurchOS API",
+    "description": "Generated from source — no direct ORM exposure (ADR 0006)",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {}
+  }
+}

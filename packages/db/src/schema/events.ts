@@ -1,4 +1,13 @@
-import { index, pgEnum, pgTable, text, timestamp, uuid, integer } from 'drizzle-orm/pg-core';
+import {
+  index,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  uuid,
+  integer,
+  uniqueIndex,
+} from 'drizzle-orm/pg-core';
 
 export const eventVisibilityEnum = pgEnum('event_visibility', ['public', 'private']);
 
@@ -38,7 +47,10 @@ export const eventRegistrations = pgTable(
     status: text('status').notNull().default('registered'),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   },
-  (table) => [index('event_registrations_event_idx').on(table.eventId)],
+  (table) => [
+    index('event_registrations_event_idx').on(table.eventId),
+    uniqueIndex('event_registrations_event_person_unique').on(table.eventId, table.personId),
+  ],
 );
 
 export const eventAttendance = pgTable(

@@ -13,7 +13,7 @@ export class AuditService {
     resourceId?: string | null;
     metadata?: Record<string, unknown> | null;
   }): Promise<void> {
-    if (!this.db) return;
+    if (!this.db) throw new Error('Audit database is not configured');
     try {
       await this.db.insert(auditEvents).values({
         actorId: params.actorId ?? null,
@@ -22,8 +22,31 @@ export class AuditService {
         resourceId: params.resourceId ?? null,
         metadata: params.metadata ?? null,
       });
-    } catch {
-      // audit must never break the main operation (observability, not correctness)
+    } catch (error) {
+      throw new Error('Failed to persist audit event', { cause: error });
+    }
+  }
+
+  async logInTx(
+    tx: Database,
+    params: {
+      actorId: string | null;
+      action: string;
+      resourceType: string;
+      resourceId?: string | null;
+      metadata?: Record<string, unknown> | null;
+    },
+  ): Promise<void> {
+    try {
+      await tx.insert(auditEvents).values({
+        actorId: params.actorId ?? null,
+        action: params.action,
+        resourceType: params.resourceType,
+        resourceId: params.resourceId ?? null,
+        metadata: params.metadata ?? null,
+      });
+    } catch (error) {
+      throw new Error('Failed to persist audit event', { cause: error });
     }
   }
 }

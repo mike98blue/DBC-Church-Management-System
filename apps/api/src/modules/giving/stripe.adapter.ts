@@ -6,6 +6,7 @@
  * PCI: ChurchOS never handles raw card data. We only create Checkout Sessions
  * and verify signed webhooks (blueprint §12, rules 1–4).
  */
+import { createHmac, timingSafeEqual } from 'node:crypto';
 export interface CheckoutSessionParams {
   amountCents: number;
   currency: string;
@@ -41,7 +42,6 @@ export class StripeAdapter {
 
   async createCheckoutSession(params: CheckoutSessionParams): Promise<CheckoutSession> {
     if (!this.secretKey) {
-      // Mock for local dev / tests — no network call, no card data
       const id = `cs_mock_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
       return {
         id,
@@ -50,11 +50,35 @@ export class StripeAdapter {
         currency: params.currency,
       };
     }
-    // Real implementation would call `stripe.checkout.sessions.create` here.
-    // Intentionally not implemented until STRIPE_SECRET_KEY is provided.
-    throw new Error(
-      'Stripe live mode not implemented in this scaffold — provide a mock or set STRIPE_SECRET_KEY handling',
-    );
+    const { default: Stripe } = await import('stripe');
+    const stripe = new Stripe(this.secretKey);
+    const session = await stripe.checkout.sessions.create({
+      mode: 'payment',
+      currency: params.currency,
+      line_items: [
+        {
+          price_data: {
+            currency: params.currency,
+            product_data: { name: `Fund ${params.fundId}` },
+            unit_amount: params.amountCents,
+          },
+          quantity: 1,
+        },
+      ],
+      success_url: params.successUrl,
+      cancel_url: params.cancelUrl,
+      metadata: {
+        fundId: params.fundId,
+        ...(params.donorId ? { personId: params.donorId } : {}),
+      },
+    });
+    if (!session.url) throw new Error('Stripe did not return a checkout URL');
+    return {
+      id: session.id,
+      url: session.url,
+      amountCents: params.amountCents,
+      currency: params.currency,
+    };
   }
 
   /**
@@ -64,13 +88,39 @@ export class StripeAdapter {
    */
   verifyWebhook(rawBody: string, signature: string | null): StripeWebhookEvent {
     if (!this.webhookSecret) {
+      if (process.env.NODE_ENV !== 'development' && process.env.NODE_ENV !== 'test') {
+        throw new Error('Stripe webhook secret is required outside development');
+      }
       const parsed = JSON.parse(rawBody) as StripeWebhookEvent;
       if (!parsed.id || !parsed.type) throw new Error('Invalid webhook payload: missing id/type');
       void signature;
       return parsed;
     }
-    // Real verification would be: stripe.webhooks.constructEvent(rawBody, signature, webhookSecret)
-    throw new Error('Stripe webhook verification not implemented for live mode');
+    if (!signature) throw new Error('Missing Stripe webhook signature');
+    const parts = new Map(
+      signature.split(',').map((part) => {
+        const [key, value] = part.split('=', 2);
+        return [key, value] as const;
+      }),
+    );
+    const timestamp = Number(parts.get('t'));
+    const supplied = parts.get('v1');
+    if (!Number.isFinite(timestamp) || !supplied) throw new Error('Invalid Stripe signature');
+    if (Math.abs(Date.now() / 1000 - timestamp) > 300) throw new Error('Expired Stripe signature');
+    const expected = createHmac('sha256', this.webhookSecret)
+      .update(`${timestamp}.${rawBody}`)
+      .digest('hex');
+    const expectedBytes = Buffer.from(expected, 'utf8');
+    const suppliedBytes = Buffer.from(supplied, 'utf8');
+    if (
+      expectedBytes.length !== suppliedBytes.length ||
+      !timingSafeEqual(expectedBytes, suppliedBytes)
+    ) {
+      throw new Error('Invalid Stripe signature');
+    }
+    const parsed = JSON.parse(rawBody) as StripeWebhookEvent;
+    if (!parsed.id || !parsed.type) throw new Error('Invalid webhook payload: missing id/type');
+    return parsed;
   }
 }
 

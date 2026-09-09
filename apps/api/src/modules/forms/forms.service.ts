@@ -149,8 +149,10 @@ export class FormsService {
       .orderBy(asc(formSubmissions.createdAt));
 
     const fieldLabel = new Map(fields.map((f) => [f.id, f.label]));
-    const csvEscape = (value: string): string =>
-      /[",\n]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value;
+    const csvEscape = (value: string): string => {
+      const safe = /^[=+\-@]/.test(value) ? `'${value}` : value;
+      return /[",\n\r]/.test(safe) ? `"${safe.replace(/"/g, '""')}"` : safe;
+    };
 
     const labels = fields.map((f) => f.label);
     const header = ['submissionId', 'submittedAt', 'submittedBy', ...labels]

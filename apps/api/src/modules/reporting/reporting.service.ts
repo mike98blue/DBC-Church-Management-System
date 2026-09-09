@@ -4,6 +4,12 @@ import { contributions, people } from '@churchos/db';
 import type { Database } from '@churchos/db';
 import type { AuditService } from '../audit/audit.service.js';
 
+function csvCell(value: unknown): string {
+  const text = String(value ?? '');
+  const safe = /^[=+\-@]/.test(text) ? `'${text}` : text;
+  return /[",\n\r]/.test(safe) ? `"${safe.replace(/"/g, '""')}"` : safe;
+}
+
 @Injectable()
 export class ReportingService {
   constructor(
@@ -46,7 +52,7 @@ export class ReportingService {
       metadata: { count: rows.length },
     });
     const header = 'id,firstName,lastName,status';
-    const lines = rows.map((r) => `${r.id},${r.firstName},${r.lastName},${r.status}`);
+    const lines = rows.map((r) => [r.id, r.firstName, r.lastName, r.status].map(csvCell).join(','));
     return [header, ...lines].join('\n');
   }
 
@@ -60,8 +66,8 @@ export class ReportingService {
       metadata: { count: rows.length },
     });
     const header = 'id,donorId,amountCents,currency,status';
-    const lines = rows.map(
-      (r) => `${r.id},${r.donorId},${r.amountCents},${r.currency},${r.status}`,
+    const lines = rows.map((r) =>
+      [r.id, r.donorId, r.amountCents, r.currency, r.status].map(csvCell).join(','),
     );
     return [header, ...lines].join('\n');
   }

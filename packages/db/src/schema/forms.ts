@@ -1,4 +1,13 @@
-import { index, jsonb, pgTable, text, timestamp, uuid, integer } from 'drizzle-orm/pg-core';
+import {
+  index,
+  jsonb,
+  pgTable,
+  text,
+  timestamp,
+  uuid,
+  integer,
+  uniqueIndex,
+} from 'drizzle-orm/pg-core';
 
 export const forms = pgTable('forms', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -20,7 +29,10 @@ export const formVersions = pgTable(
     status: text('status').notNull().default('draft'),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   },
-  (table) => [index('form_versions_form_idx').on(table.formId)],
+  (table) => [
+    index('form_versions_form_idx').on(table.formId),
+    uniqueIndex('form_versions_form_version_unique').on(table.formId, table.version),
+  ],
 );
 
 export const formFields = pgTable(
@@ -68,7 +80,10 @@ export const formAnswers = pgTable(
       .references(() => formFields.id, { onDelete: 'restrict' }),
     value: text('value'),
   },
-  (table) => [index('form_answers_submission_idx').on(table.submissionId)],
+  (table) => [
+    index('form_answers_submission_idx').on(table.submissionId),
+    uniqueIndex('form_answers_submission_field_unique').on(table.submissionId, table.fieldId),
+  ],
 );
 
 export type FormRow = typeof forms.$inferSelect;

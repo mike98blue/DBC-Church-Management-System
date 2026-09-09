@@ -33,4 +33,20 @@ describe('CheckinController', () => {
       ForbiddenException,
     );
   });
+  it('forwards actor to service for household check', async () => {
+    const service = mockService();
+    const c = new CheckinController(service);
+    const actor = { id: 'u1', permissions: ['checkin.operate' as never], personId: 'p1' };
+    await c.checkIn(actor, {
+      childPersonId: '00000000-0000-0000-0000-000000000001',
+      eventId: '00000000-0000-0000-0000-000000000002',
+    } as never);
+    expect(service.checkIn).toHaveBeenCalledWith(
+      {
+        childPersonId: '00000000-0000-0000-0000-000000000001',
+        eventId: '00000000-0000-0000-0000-000000000002',
+      },
+      actor,
+    );
+  });
 });

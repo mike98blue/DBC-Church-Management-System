@@ -1,6 +1,6 @@
 import { Inject, Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { asc, count, eq } from 'drizzle-orm';
-import { eventAttendance, eventRegistrations, events } from '@churchos/db';
+import { and, asc, count, eq } from 'drizzle-orm';
+import { eventAttendance, eventRegistrations, events, people } from '@churchos/db';
 import type { Database } from '@churchos/db';
 import { expandRecurrence, parseRecurrenceRule } from './recurrence.js';
 import type { CreateEventDto } from './dto/create-event.dto.js';
@@ -145,6 +145,25 @@ export class EventsService {
 
     if (!dto.personId && !dto.guestName) {
       throw new BadRequestException('personId or guestName is required');
+    }
+    if (dto.personId) {
+      const [person] = await db
+        .select({ id: people.id })
+        .from(people)
+        .where(eq(people.id, dto.personId))
+        .limit(1);
+      if (!person) throw new NotFoundException('Person not found');
+      const [duplicate] = await db
+        .select({ id: eventRegistrations.id })
+        .from(eventRegistrations)
+        .where(
+          and(
+            eq(eventRegistrations.eventId, eventId),
+            eq(eventRegistrations.personId, dto.personId),
+          ),
+        )
+        .limit(1);
+      if (duplicate) throw new BadRequestException('Already registered');
     }
 
     const [row] = await db
