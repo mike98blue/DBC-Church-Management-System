@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CalendarService } from './calendar.service';
+import type { CalendarService } from './calendar.service';
 import type { Database } from '@churchos/db';
 
 function fakeDb(

@@ -12,7 +12,8 @@ import {
 import { PERMISSIONS, assertPermission, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
 import type { UpdateDirectoryDto } from './dto/update-directory.dto.js';
-import type { DirectoryService } from './directory.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { DirectoryService } from './directory.service.js';
 
 @Controller('api/v1/directory')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }))

@@ -12,7 +12,8 @@ import {
 } from '@nestjs/common';
 import { PERMISSIONS, assertPermission, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
-import type { TagsService } from './tags.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { TagsService } from './tags.service.js';
 import type { CreateTagDto, TagPersonDto } from './dto/create-tag.dto.js';
 
 @Controller('api/v1/tags')

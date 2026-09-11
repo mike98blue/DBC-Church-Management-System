@@ -2,7 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { count, sql } from 'drizzle-orm';
 import { contributions, people } from '@churchos/db';
 import type { Database } from '@churchos/db';
-import type { AuditService } from '../audit/audit.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { AuditService } from '../audit/audit.service.js';
 
 function csvCell(value: unknown): string {
   const text = String(value ?? '');

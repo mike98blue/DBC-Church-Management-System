@@ -13,7 +13,8 @@ import { PERMISSIONS, assertPermission, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
 import type { CreateTemplateDto } from './dto/create-template.dto.js';
 import type { SendGroupEmailDto } from './dto/send-group-email.dto.js';
-import type { CommunicationsService } from './communications.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { CommunicationsService } from './communications.service.js';
 
 @Controller('api/v1/communications')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }))

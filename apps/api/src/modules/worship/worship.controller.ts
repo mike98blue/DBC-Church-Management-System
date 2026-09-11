@@ -16,7 +16,8 @@ import type {
   CreateServiceDto,
   CreateSongDto,
 } from './dto/create-worship.dto.js';
-import type { WorshipService } from './worship.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { WorshipService } from './worship.service.js';
 
 @Controller('api/v1/worship')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }))

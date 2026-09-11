@@ -11,7 +11,8 @@ import {
 import { PERMISSIONS, assertPermission, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
 import type { CreateAssignmentDto, CreateAvailabilityDto } from './dto/create-scheduling.dto.js';
-import type { SchedulingService } from './scheduling.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { SchedulingService } from './scheduling.service.js';
 
 @Controller('api/v1/scheduling')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }))

@@ -14,7 +14,8 @@ import { assertCanAccessResource, PERMISSIONS, type Actor } from '@churchos/auth
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
 import type { AddGroupMemberDto } from './dto/add-member.dto.js';
 import type { CreateGroupDto } from './dto/create-group.dto.js';
-import type { GroupsService } from './groups.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { GroupsService } from './groups.service.js';
 
 @Controller('api/v1/groups')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }))

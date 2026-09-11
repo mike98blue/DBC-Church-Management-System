@@ -15,7 +15,8 @@ import type {
   CreateReservationDto,
   CreateRoomDto,
 } from './dto/create-facility.dto.js';
-import type { FacilityService } from './facility.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { FacilityService } from './facility.service.js';
 
 @Controller('api/v1/facilities')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }))

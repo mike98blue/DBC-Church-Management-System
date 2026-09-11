@@ -12,7 +12,8 @@ import {
 import { assertCanAccessResource, PERMISSIONS, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
 import type { AddCareNoteDto, CreateCareCaseDto, CreatePrayerDto } from './dto/create-care.dto.js';
-import type { CareService } from './care.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { CareService } from './care.service.js';
 
 @Controller('api/v1/care')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }))

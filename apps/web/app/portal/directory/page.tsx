@@ -1,22 +1,66 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import { apiFetch } from '@/lib/api';
 
-export default async function DirectoryPage({ searchParams }: { searchParams?: { q?: string } }) {
+const MOCK_PERSON_ID = '00000000-0000-0000-0000-000000000001';
+
+export default function DirectoryPage({ searchParams }: { searchParams?: { q?: string } }) {
   const q = searchParams?.q?.trim() ?? '';
-  let entries: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    directory?: { showEmail?: boolean };
-  }[] = [];
-  try {
-    const path = q ? `/api/v1/directory?q=${encodeURIComponent(q)}` : '/api/v1/directory';
-    const data = await apiFetch<
-      { id: string; firstName: string; lastName: string }[] | { data: unknown[] }
-    >(path);
-    entries = Array.isArray(data)
-      ? (data as { id: string; firstName: string; lastName: string }[])
-      : [];
-  } catch {}
+  const [entries, setEntries] = useState<{ id: string; firstName: string; lastName: string }[]>([]);
+  const [prefs, setPrefs] = useState({
+    showInDirectory: false,
+    showEmail: false,
+    showPhone: false,
+    showAddress: false,
+  });
+  const [personId, setPersonId] = useState(MOCK_PERSON_ID);
+  const [status, setStatus] = useState<string | null>(null);
+
+  useEffect(() => {
+    const stored = typeof window !== 'undefined' ? localStorage.getItem('personId') : null;
+    if (stored) setPersonId(stored);
+  }, []);
+
+  useEffect(() => {
+    apiFetch<{ id: string; firstName: string; lastName: string }[] | { data: unknown[] }>(
+      q ? `/api/v1/directory?q=${encodeURIComponent(q)}` : '/api/v1/directory',
+    )
+      .then((data) => {
+        if (Array.isArray(data))
+          setEntries(data as { id: string; firstName: string; lastName: string }[]);
+      })
+      .catch(() => {});
+    apiFetch<{
+      showInDirectory?: boolean;
+      showEmail?: boolean;
+      showPhone?: boolean;
+      showAddress?: boolean;
+    } | null>(`/api/v1/directory/preferences/${personId}`)
+      .then((p) => {
+        if (p) setPrefs((prev) => ({ ...prev, ...p }));
+      })
+      .catch(() => {});
+  }, [q, personId]);
+
+  async function save() {
+    setStatus(null);
+    try {
+      const updated = await apiFetch<{
+        showInDirectory?: boolean;
+        showEmail?: boolean;
+        showPhone?: boolean;
+        showAddress?: boolean;
+      }>(`/api/v1/directory/preferences/${personId}`, {
+        method: 'PUT',
+        body: JSON.stringify(prefs),
+      });
+      if (updated) setPrefs((prev) => ({ ...prev, ...updated }));
+      setStatus('Saved');
+    } catch (e) {
+      setStatus(e instanceof Error ? e.message : 'Save failed');
+    }
+  }
 
   return (
     <main>
@@ -27,28 +71,49 @@ export default async function DirectoryPage({ searchParams }: { searchParams?: {
         </label>{' '}
         <button type="submit">Search</button>
       </form>
-      <form style={{ marginTop: '1rem', padding: '1rem', border: '1px solid #ddd' }}>
+      <div style={{ marginTop: '1rem', padding: '1rem', border: '1px solid #ddd' }}>
         <h2>Your visibility</h2>
         <label>
-          <input type="checkbox" name="showInDirectory" /> Show me in directory
+          <input
+            type="checkbox"
+            checked={prefs.showInDirectory}
+            onChange={(e) => setPrefs((p) => ({ ...p, showInDirectory: e.target.checked }))}
+          />{' '}
+          Show me in directory
         </label>
         <br />
         <label>
-          <input type="checkbox" name="showEmail" /> Show email
+          <input
+            type="checkbox"
+            checked={prefs.showEmail}
+            onChange={(e) => setPrefs((p) => ({ ...p, showEmail: e.target.checked }))}
+          />{' '}
+          Show email
         </label>
         <br />
         <label>
-          <input type="checkbox" name="showPhone" /> Show phone
+          <input
+            type="checkbox"
+            checked={prefs.showPhone}
+            onChange={(e) => setPrefs((p) => ({ ...p, showPhone: e.target.checked }))}
+          />{' '}
+          Show phone
         </label>
         <br />
         <label>
-          <input type="checkbox" name="showAddress" /> Show address
+          <input
+            type="checkbox"
+            checked={prefs.showAddress}
+            onChange={(e) => setPrefs((p) => ({ ...p, showAddress: e.target.checked }))}
+          />{' '}
+          Show address
         </label>
         <br />
-        <button type="submit" formAction="/api/v1/directory/preferences/self">
+        <button type="button" onClick={save}>
           Save preferences (PUT /directory/preferences/:personId)
         </button>
-      </form>
+        {status && <span style={{ marginLeft: '0.5rem' }}>{status}</span>}
+      </div>
       {entries.length > 0 ? (
         <ul>
           {entries.slice(0, 20).map((e) => (

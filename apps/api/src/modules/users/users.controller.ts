@@ -11,7 +11,8 @@ import {
 import { PERMISSIONS, assertPermission, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
 import type { UpsertUserDto } from './dto/upsert-user.dto.js';
-import type { UsersService } from './users.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { UsersService } from './users.service.js';
 
 @Controller('api/v1/admin/users')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }))

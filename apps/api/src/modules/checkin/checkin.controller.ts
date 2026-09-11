@@ -13,7 +13,8 @@ import {
 import { PERMISSIONS, assertPermission, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
 import type { CheckInDto, CheckOutDto } from './dto/checkin.dto.js';
-import type { CheckinService } from './checkin.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { CheckinService } from './checkin.service.js';
 
 @Controller('api/v1/checkin')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }))

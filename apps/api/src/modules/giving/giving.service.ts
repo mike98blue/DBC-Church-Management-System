@@ -10,7 +10,8 @@ import {
 } from '@churchos/db';
 import type { Database } from '@churchos/db';
 import { stripeAdapter } from './stripe.adapter.js';
-import type { AuditService } from '../audit/audit.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { AuditService } from '../audit/audit.service.js';
 
 @Injectable()
 export class GivingService {

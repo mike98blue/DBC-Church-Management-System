@@ -11,7 +11,8 @@ import {
 import { PERMISSIONS, assertPermission, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
 import type { RequestCheckDto } from './dto/request-check.dto.js';
-import type { BackgroundChecksService } from './background-checks.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { BackgroundChecksService } from './background-checks.service.js';
 
 @Controller('api/v1/background-checks')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }))

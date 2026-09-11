@@ -4,6 +4,7 @@ import {
   Get,
   Header,
   HttpCode,
+  Inject,
   Param,
   ParseUUIDPipe,
   Patch,
@@ -14,17 +15,19 @@ import {
 } from '@nestjs/common';
 import { assertCanAccessResource, PERMISSIONS, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
-import type { ReportingService } from '../reporting/reporting.service.js';
+
+import { ReportingService } from '../reporting/reporting.service.js';
 import type { CreatePersonDto } from './dto/create-person.dto.js';
 import type { UpdatePersonDto } from './dto/update-person.dto.js';
-import type { PeopleService } from './people.service.js';
+
+import { PeopleService } from './people.service.js';
 
 @Controller('api/v1/people')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }))
 export class PeopleController {
   constructor(
-    private readonly people: PeopleService,
-    private readonly reporting: ReportingService,
+    @Inject(PeopleService) private readonly people: PeopleService,
+    @Inject(ReportingService) private readonly reporting: ReportingService,
   ) {}
 
   @Get('export')

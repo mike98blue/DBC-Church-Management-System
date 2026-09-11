@@ -2,7 +2,8 @@ import { Body, Controller, HttpCode, Post, UsePipes, ValidationPipe } from '@nes
 import { PERMISSIONS, assertPermission, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
 import type { DuplicateCheckDto } from './dto/duplicate-check.dto.js';
-import type { DuplicateService } from './duplicate.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { DuplicateService } from './duplicate.service.js';
 
 @Controller('api/v1/people')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }))

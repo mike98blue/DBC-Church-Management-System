@@ -1,5 +1,6 @@
 import { Controller, Get, Header } from '@nestjs/common';
-import type { CalendarService } from './calendar.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { CalendarService } from './calendar.service.js';
 
 @Controller('api/v1/calendar')
 export class CalendarController {

@@ -2,7 +2,8 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { asc, eq, ilike, or } from 'drizzle-orm';
 import { people } from '@churchos/db';
 import type { Database } from '@churchos/db';
-import type { AuditService } from '../audit/audit.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { AuditService } from '../audit/audit.service.js';
 import type { CreatePersonDto } from './dto/create-person.dto.js';
 import type { UpdatePersonDto } from './dto/update-person.dto.js';
 

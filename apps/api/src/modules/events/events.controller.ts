@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpCode,
+  Inject,
   Param,
   ParseUUIDPipe,
   Post,
@@ -14,12 +15,13 @@ import { PERMISSIONS, assertPermission, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
 import type { CreateEventDto } from './dto/create-event.dto.js';
 import type { RegisterDto } from './dto/register.dto.js';
-import type { EventsService } from './events.service.js';
+
+import { EventsService } from './events.service.js';
 
 @Controller('api/v1/events')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }))
 export class EventsController {
-  constructor(private readonly events: EventsService) {}
+  constructor(@Inject(EventsService) private readonly events: EventsService) {}
 
   @Get()
   async list(

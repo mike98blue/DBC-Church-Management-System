@@ -10,7 +10,8 @@ import {
 } from '@nestjs/common';
 import { PERMISSIONS, assertPermission, type Actor } from '@churchos/auth';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
-import type { CustomFieldsService } from './custom-fields.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { CustomFieldsService } from './custom-fields.service.js';
 import type { CreateFieldDefinitionDto, SetFieldValueDto } from './dto/custom-field.dto.js';
 
 @Controller('api/v1/custom-fields')

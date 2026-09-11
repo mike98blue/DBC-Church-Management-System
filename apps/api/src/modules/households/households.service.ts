@@ -1,8 +1,9 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { and, asc, eq } from 'drizzle-orm';
+import { and, asc, eq, inArray } from 'drizzle-orm';
 import { householdMembers, households } from '@churchos/db';
 import type { Database } from '@churchos/db';
-import type { AuditService } from '../audit/audit.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { AuditService } from '../audit/audit.service.js';
 import type { AddMemberDto } from './dto/add-member.dto.js';
 import type { CreateHouseholdDto } from './dto/create-household.dto.js';
 
@@ -18,8 +19,21 @@ export class HouseholdsService {
     return this.db as NonNullable<Database>;
   }
 
-  async list(): Promise<(typeof households.$inferSelect)[]> {
+  async list(personId?: string): Promise<(typeof households.$inferSelect)[]> {
     const db = this.requireDb();
+    if (personId) {
+      const memberships = await db
+        .select({ householdId: householdMembers.householdId })
+        .from(householdMembers)
+        .where(eq(householdMembers.personId, personId));
+      if (memberships.length === 0) return [];
+      const ids = memberships.map((m) => m.householdId);
+      return db
+        .select()
+        .from(households)
+        .where(inArray(households.id, ids))
+        .orderBy(asc(households.name));
+    }
     return db.select().from(households).orderBy(asc(households.name));
   }
 

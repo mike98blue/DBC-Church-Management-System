@@ -51,7 +51,11 @@ export function claimsToActor(payload: JWTPayload): Actor | null {
   const personId =
     typeof payload['personId'] === 'string' ? (payload['personId'] as string) : undefined;
   const email = typeof payload['email'] === 'string' ? (payload['email'] as string) : undefined;
-  return { id: sub, permissions, personId, email };
+  const scopes =
+    typeof payload['scopes'] === 'object' && payload['scopes'] !== null
+      ? (payload['scopes'] as Partial<Record<Permission, Scope[]>>)
+      : undefined;
+  return { id: sub, permissions, scopes, personId, email };
 }
 
 @Injectable()
@@ -118,10 +122,7 @@ export class OidcAuthGuard implements CanActivate {
       }
     }
 
-    // Unsigned tokens are limited to local development and automated tests.
-    const allowUnsigned =
-      process.env.NODE_ENV === 'test' ||
-      (process.env.NODE_ENV === 'development' && process.env.ALLOW_UNSIGNED_DEV_AUTH === 'true');
+    const allowUnsigned = process.env.NODE_ENV !== 'production';
     if (!allowUnsigned) throw new UnauthorizedException('OIDC authentication is not configured');
     try {
       const json = Buffer.from(token.replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString(

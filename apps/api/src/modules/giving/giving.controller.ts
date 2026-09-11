@@ -15,13 +15,15 @@ import {
 import { PERMISSIONS, assertPermission, type Actor } from '@churchos/auth';
 import { RateLimit } from '../../common/guards/rate-limit.guard.js';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
-import type { ReportingService } from '../reporting/reporting.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { ReportingService } from '../reporting/reporting.service.js';
 import type {
   CreateCheckoutDto,
   CreateFundDto,
   CreateManualEntryDto,
 } from './dto/create-fund.dto.js';
-import type { GivingService } from './giving.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { GivingService } from './giving.service.js';
 
 @Controller('api/v1/giving')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }))

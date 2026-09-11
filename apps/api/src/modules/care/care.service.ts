@@ -2,7 +2,8 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
 import { careCases, careNotes, prayerRequests } from '@churchos/db';
 import type { Database } from '@churchos/db';
-import type { AuditService } from '../audit/audit.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { AuditService } from '../audit/audit.service.js';
 
 @Injectable()
 export class CareService {

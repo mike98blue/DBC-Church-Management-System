@@ -15,7 +15,8 @@ import { RateLimit } from '../../common/guards/rate-limit.guard.js';
 import { CurrentActor } from '../../common/decorators/current-actor.decorator.js';
 import type { CreateFormDto } from './dto/create-form.dto.js';
 import type { SubmitFormDto } from './dto/submit-form.dto.js';
-import type { FormsService } from './forms.service.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { FormsService } from './forms.service.js';
 
 @Controller('api/v1/forms')
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }))
