@@ -136,7 +136,7 @@ jobs:
     name: Deploy staging (migrations)
     runs-on: ubuntu-latest
     needs: [lint, typecheck, test, build, audit, e2e]
-    if: false
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     environment: staging
     steps:
       - uses: actions/checkout@v4
